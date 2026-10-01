@@ -1,0 +1,415 @@
+# Zero-Code Testing in Go with Keploy: The Echo & PostgreSQL Hands-On Guide
+
+Testing microservices in Go usually comes with a frustrating trade-off: either you write hundreds of lines of brittle mocks using tools like `gomock` and `sqlmock`, or you spin up slow, heavy end-to-end environments with `testcontainers` and Docker Compose that take minutes to run in CI.
+
+**Keploy flips this paradigm on its head.**
+
+Instead of writing test harnesses and maintaining database fixtures manually, Keploy transparently intercepts your application's incoming HTTP calls and outgoing database transactions directly at the network layer. It turns live user traffic into reproducible test cases and mocks automatically—**with zero code changes**.
+
+In this guide, you will walk through running Keploy on a real Go web service built with the **Echo** framework and **PostgreSQL**, witness the &quot;a-ha!&quot; moment of replaying tests with the database completely powered down, and learn the real-world troubleshooting lessons learned from running on **Windows WSL2**.
+
+---
+
+<ArchitectureDiagram />
+
+---
+
+## 1. Why Keploy for Go Developers?
+
+Traditional Go unit and integration tests suffer from three fundamental problems:
+
+1. **High Maintenance Overhead**: Every time a database schema or struct changes, you must rewrite your mock expectations.
+2. **False Positives &amp; Negatives**: Mocking `database/sql` drivers rarely simulates realistic network latency, connection pooling, or query serialization bugs.
+3. **Flaky CI Pipelines**: Spinning up Postgres containers in CI causes network timeouts, slow test runs, and test pollution from uncommitted transactions.
+
+### How Keploy Solves This
+Keploy operates as a transparent proxy. When your application dials out to PostgreSQL on port `5432` or accepts HTTP traffic on port `8082`, Keploy:
+- **During Record**: Captures the exact SQL wire protocol requests and responses alongside the HTTP payload.
+- **During Test**: Replays the recorded SQL responses directly to your Go binary when it makes database queries—eliminating the need for a live database during testing!
+
+<Callout type="tip" title="Zero Code Changes">
+Unlike other tracing or recording libraries, Keploy requires **no SDK imports**, **no middleware injection**, and **no changes to your Go structs**. It works purely at the network protocol layer.
+</Callout>
+
+---
+
+## 2. Prerequisites &amp; Environment Setup
+
+Before starting, ensure your system has the following tools installed:
+
+- **Go**: Version 1.22 or higher (`go version`)
+- **Docker &amp; Docker Compose**: For hosting the PostgreSQL database container
+- **WSL2 (Ubuntu)**: If running on Windows
+- **Keploy CLI**: The latest Keploy binary (v3.8.57 or higher)
+
+### Installing Keploy CLI
+
+Install Keploy using the official installation script:
+
+```bash
+curl --silent -O -L https://keploy.io/install.sh && source install.sh
+```
+
+Verify the installation:
+
+```bash
+keploy --version
+# Output: Keploy 3.8.57
+```
+
+<Callout type="warning" title="Headless WSL2 Authentication">
+When running in WSL2, Keploy&apos;s browser OAuth callback may time out because WSL cannot launch Windows GUI browsers automatically. Use manual authentication or pass your API key directly via `--api-key "kep_YOUR_KEY"`.
+</Callout>
+
+```bash
+keploy login --manual-login
+# Enter your Keploy API key when prompted
+```
+
+---
+
+## 3. Preparing the Echo + PostgreSQL Application
+
+We will use Keploy&apos;s official Go sample: a URL shortener built with the **Echo** web framework and **PostgreSQL**.
+
+### Step 1: Clone the Sample Repository
+
+```bash
+cd ~
+git clone https://github.com/keploy/samples-go.git
+cd samples-go/echo-sql
+```
+
+### Step 2: Clear Bundled Sample Recordings
+
+The sample repository includes pre-recorded test sets for demonstration. To ensure our run is 100% clean and authentic, move the existing folder aside:
+
+```bash
+mv keploy keploy-sample-original
+```
+
+### Step 3: Start Only PostgreSQL in Docker
+
+We want to run PostgreSQL inside a Docker container while running our Go binary natively on the host machine. Inspect the services and start Postgres:
+
+```bash
+docker compose config --services
+# Output: postgres, app
+
+docker compose up -d postgres
+docker ps
+```
+
+Verify that `docker ps` lists the `postgres` container with port `5432` mapped to `0.0.0.0:5432`.
+
+### Step 4: Point the Application to Localhost
+
+In `main.go`, the default database connection string uses `host=postgres` (for container-to-container networking). Since our Go binary will run natively on WSL2 and communicate with the container via published ports, update the host to `localhost`:
+
+```bash
+sed -i 's/host=postgres/host=localhost/' main.go
+grep -n -i "host" main.go
+```
+
+### Step 5: Build the Pure Static Go Binary
+
+To avoid C compiler header issues (`errno.h` / `pthread.h`) on minimal Linux distributions, build the binary with `CGO_ENABLED=0`:
+
+```bash
+CGO_ENABLED=0 go build -o echo-psql-url-shortener .
+ls -lh echo-psql-url-shortener
+```
+
+---
+
+## 4. Recording Test Cases &amp; Database Mocks
+
+Now comes the fun part: recording live API calls into self-contained test cases and mocks!
+
+<Steps>
+  <Step number="1" title="Start Keploy in Record Mode">
+    Launch Keploy with the record command, pointing it to our compiled Go binary:
+
+```bash
+keploy record -c "./echo-psql-url-shortener" --api-key "kep_YOUR_KEY"
+```
+
+    Keploy will start the eBPF network hooks, bind its DNS interceptor, and launch `./echo-psql-url-shortener`. Wait approximately 10 seconds until you see:
+
+```bash
+🐰 Keploy: Keploy agent is ready to record test cases and mocks.
+🐰 Keploy: Starting Application : ./echo-psql-url-shortener
+   ⇨ http server started on :8082
+```
+  </Step>
+
+  <Step number="2" title="Generate Traffic via cURL">
+    Open a second terminal window and send requests to the Echo server on port `8082`:
+
+```bash
+# 1. Shorten GitHub URL (POST request)
+curl -X POST http://localhost:8082/url \
+  -H "Content-Type: application/json" \
+  -d '{"url": "https://github.com"}'
+
+# 2. Access Shortened URL (GET redirect)
+curl -i http://localhost:8082/4KepjkTT
+
+# 3. Query Non-Existent URL (404 error case)
+curl -i http://localhost:8082/doesnotexist
+```
+
+    Keploy immediately captures each call and notifies you in the recording terminal:
+
+```bash
+🐰 Keploy: 🟠 Keploy has captured test cases for the user's application.
+   {"path": "keploy/test-set-0/tests", "testcase name": "post-url-1"}
+
+🐰 Keploy: 🟠 Keploy has captured test cases for the user's application.
+   {"path": "keploy/test-set-0/tests", "testcase name": "get-url-1"}
+
+🐰 Keploy: 🟠 Keploy has captured test cases for the user's application.
+   {"path": "keploy/test-set-0/tests", "testcase name": "get-not-found-1"}
+```
+  </Step>
+
+  <Step number="3" title="Stop Recording">
+    In the first terminal window, press `Ctrl + C` once. Keploy will gracefully shut down the application, flush the buffers, and serialize your test cases and PostgreSQL mocks to disk.
+  </Step>
+</Steps>
+
+---
+
+## 5. Inspecting the Generated Test Artifacts
+
+Keploy stores recordings as human-readable YAML files in the `keploy/` directory:
+
+```bash
+ls -la keploy/test-set-0/
+# tests/      -> Directory containing HTTP test specs
+# mocks.yaml  -> Outgoing database mock mappings
+```
+
+### Understanding the Test Case (`post-url-1.yaml`)
+
+```yaml
+version: api.keploy.io/v1beta1
+kind: Http
+name: post-url-1
+spec:
+  metadata: {}
+  req:
+    method: POST
+    url: http://localhost:8082/url
+    header:
+      Content-Type: application/json
+    body: '{"url": "https://github.com"}'
+  resp:
+    status_code: 200
+    header:
+      Content-Type: application/json; charset=UTF-8
+    body: '{"ts":1790853264,"url":"http://localhost:8082/4KepjkTT"}'
+  assertions:
+    noise:
+      body.ts: []       # Automatically ignores non-deterministic timestamps!
+      header.Date: []   # Ignores dynamic HTTP date headers!
+```
+
+<Callout type="aha" title="Smart Noise Detection">
+Notice the `assertions.noise` block! Keploy automatically recognized that `body.ts` and `header.Date` change on every single run. It marks them as **noise**, ensuring tests won&apos;t fail due to timestamp drift!
+</Callout>
+
+### Understanding the Database Mock (`mocks.yaml`)
+
+Open `keploy/test-set-0/mocks.yaml`. Inside, you will find Keploy&apos;s captured PostgreSQL wire packets:
+
+```yaml
+version: api.keploy.io/v1beta1
+kind: Postgres
+name: mock-0
+spec:
+  metadata:
+    type: config
+  requests:
+    - message:
+        query: "INSERT INTO urls (id, url, created_at) VALUES ($1, $2, $3)"
+  responses:
+    - message:
+        tag: "INSERT 0 1"
+```
+
+---
+
+## 6. The &quot;A-Ha!&quot; Moment: Testing With Zero Database!
+
+Here is the capability that transforms microservice testing.
+
+In standard testing setups, running end-to-end tests requires an active database. If Postgres is down, tests fail immediately with connection errors.
+
+**Let&apos;s shut down PostgreSQL and test with Keploy:**
+
+```bash
+# 1. Stop PostgreSQL
+docker compose stop postgres
+
+# 2. Verify Postgres is completely down
+docker ps  # (Must NOT list postgres)
+
+# 3. Run Keploy Test
+keploy test -c "./echo-psql-url-shortener" --delay 10 --api-key "kep_YOUR_KEY"
+```
+
+### The Test Result:
+
+```bash
+ <=========================================>
+  TESTRUN SUMMARY. For test-set: "test-set-0"
+        Total tests:        3
+        Total test passed:  3
+        Total test failed:  0
+        Time Taken:         "10.42 s"
+ <=========================================>
+```
+
+<Callout type="aha" title="Why Did This Pass Without Postgres?">
+When the Go binary executed `sql.Open("postgres", ...)`, it attempted to connect to `localhost:5432`. **Keploy&apos;s proxy intercepted the connection at the kernel level**, fed the pre-recorded PostgreSQL handshake and query responses from `mocks.yaml`, and returned the data directly to the Go runtime. 
+
+The application had **no idea** the real database was powered off!
+</Callout>
+
+---
+
+## 7. Catching Regressions on Purpose
+
+A testing framework is only as good as its ability to catch bugs. Let&apos;s intentionally introduce a breaking change in our API contract and verify that Keploy catches it.
+
+### Step 1: Mutate the JSON Response Struct
+
+In `handler.go`, find the `successResponse` struct around line 39:
+
+```go
+type successResponse struct {
+    TS  int64  `json:"ts"`
+    URL string `json:"url"`      // Change this tag to "short_url"
+}
+```
+
+Apply the mutation using `sed`:
+
+```bash
+sed -i '39s/json:"url"/json:"short_url"/' handler.go
+sed -n 33,41p handler.go
+```
+
+### Step 2: Recompile and Run Keploy Test
+
+```bash
+CGO_ENABLED=0 go build -o echo-psql-url-shortener .
+keploy test -c "./echo-psql-url-shortener" --delay 10 --api-key "kep_YOUR_KEY"
+```
+
+### The Expected Regression Failure:
+
+```bash
+🐰 Keploy: starting test for: post-url-1 (test-set-0)
+---------------------------------------------------------------------------
+❌ Testcase FAILED: post-url-1
+   Response body mismatch:
+   Expected: {"ts":1790853264,"url":"http://localhost:8082/4KepjkTT"}
+   Actual:   {"ts":1790853264,"short_url":"http://localhost:8082/4KepjkTT"}
+
+   Diff:
+   - "url"
+   + "short_url"
+---------------------------------------------------------------------------
+TESTRUN SUMMARY:
+   Total tests: 3 | Passed: 2 | Failed: 1
+```
+
+Keploy pinpointed the exact field change without needing any test suite reconfiguration!
+
+### Step 3: Undo the Change and Restore Green
+
+```bash
+git checkout handler.go
+CGO_ENABLED=0 go build -o echo-psql-url-shortener .
+keploy test -c "./echo-psql-url-shortener" --delay 10 --api-key "kep_YOUR_KEY"
+# Result: 3 passed, 0 failed ✅
+```
+
+---
+
+## 8. Interactive Test Run Simulator
+
+Experience each phase of the test cycle interactively below:
+
+<TestRunSimulator />
+
+---
+
+## 9. Real-World Gotchas &amp; Battle-Tested Fixes
+
+During our journey—from our initial attempt with **Gin + Mongo** to our successful run with **Echo + Postgres**—we ran into several common friction points that every Go developer will face. Here is the field guide to solving them:
+
+<GotchaAccordion />
+
+---
+
+## 10. Wiring Keploy Into CI/CD (GitHub Actions)
+
+Because Keploy tests require no running databases, your CI/CD pipelines run in seconds rather than minutes.
+
+Here is a ready-to-use GitHub Actions workflow:
+
+```yaml
+name: Keploy Zero-DB Test Suite
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
+      - name: Build Pure Go Binary
+        run: CGO_ENABLED=0 go build -o echo-psql-url-shortener .
+
+      - name: Install Keploy
+        run: |
+          curl --silent -O -L https://keploy.io/install.sh && bash install.sh -isCI
+
+      - name: Run Keploy Replay (Zero DB)
+        env:
+          KEPLOY_API_KEY: ${{ secrets.KEPLOY_API_KEY }}
+        run: |
+          keploy test -c "./echo-psql-url-shortener" --delay 10
+```
+
+<Callout type="tip" title="Repository Best Practices">
+- **DO commit**: `keploy/test-set-0/tests/` (the declarative HTTP test specs) and `config.yaml`.
+- **DO NOT commit**: Raw `mocks.yaml` files if they contain large binary dumps. Keploy can automatically upload and version mocks in the cloud registry using your API key.
+</Callout>
+
+---
+
+## 11. Conclusion &amp; Key Takeaways
+
+By moving from manual mock implementations to **Keploy&apos;s network-level recording**, we achieved:
+
+1. **Zero Test Code Written**: 3 complete integration tests and all PostgreSQL wire mocks were created in under 60 seconds simply by exercising our API with `curl`.
+2. **True Dependency Isolation**: Tests ran and passed with the PostgreSQL container completely stopped.
+3. **Instant Regression Guardrails**: Breaking API changes were flagged with precise field-level diffs.
+4. **Faster CI Cycles**: No need to spin up or seed test databases in CI runners, saving compute minutes and eliminating flakiness.
+
+Happy testing with Keploy and Go! 🐰

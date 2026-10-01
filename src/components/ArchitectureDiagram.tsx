@@ -101,7 +101,7 @@ export function ArchitectureDiagram() {
               Go Application
             </div>
             <div className="text-sm font-semibold text-slate-800 dark:text-slate-200 mt-0.5">
-              Echo / Gin App
+              Echo App
             </div>
             <div className="text-[11px] text-slate-500 font-mono mt-1">
               {activeMode === "regression" ? "handler.go (MODIFIED)" : "handler.go (UNTOUCHED)"}
@@ -129,7 +129,7 @@ export function ArchitectureDiagram() {
               Dependency State
             </div>
             <div className="text-sm font-semibold text-slate-800 dark:text-slate-200 mt-0.5">
-              {activeMode === "record" ? "Live Postgres / Mongo" : "Postgres STOPPED!"}
+              {activeMode === "record" ? "Live Postgres" : "Postgres STOPPED!"}
             </div>
             <div className="text-[11px] font-mono mt-1 text-slate-600 dark:text-slate-400">
               {activeMode === "record" ? "Writes to disk" : "Served from mocks.yaml"}

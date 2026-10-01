@@ -43,7 +43,7 @@ const GOTCHAS: GotchaItem[] = [
   },
   {
     id: "host-networking",
-    title: "Database Host: 'localhost' vs 'postgres' / 'mongoDb'",
+    title: "Database Host: 'localhost' vs 'postgres'",
     badge: "Networking",
     symptom: "Application fails to connect to database: connection refused at 'postgres:5432'.",
     cause: "When the Go app runs inside Docker, it uses Docker's internal DNS network ('postgres'). But when running natively on the host/WSL2 and talking to Dockerized Postgres with port 5432 published, the host must be 'localhost'.",
@@ -77,7 +77,7 @@ export function GotchaAccordion() {
         </h3>
       </div>
       <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
-        Every developer encounters hiccups when pairing WSL2, Docker, and eBPF network hooks. Here are the exact 5 friction points hit during our initial Gin + Mongo run and how they paved the way for our seamless Echo + Postgres implementation:
+        Every developer encounters hiccups when pairing WSL2, Docker, and eBPF network hooks. Here are the exact 5 friction points hit during our Echo + Postgres run and how to solve them:
       </p>
 
       {GOTCHAS.map((item) => {

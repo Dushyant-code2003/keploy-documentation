@@ -111,7 +111,7 @@ This compiles an optimized, static production build ready for deployment on Verc
 
 ## 📝 Assignment Deliverables Checklist
 
-- [x] Successfully ran Keploy quickstart locally for a Go application (Echo + PostgreSQL & Gin + Mongo).
+- [x] Successfully ran Keploy quickstart locally for a Go application (Echo + PostgreSQL).
 - [x] Captured live API traffic and verified generated test cases and database mocks.
 - [x] Proved zero-dependency testing with the database container stopped.
 - [x] Verified schema mutation regression detection by modifying Go struct tags.

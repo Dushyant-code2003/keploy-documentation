@@ -10,16 +10,19 @@ interface TocItem {
 
 const TOC_ITEMS: TocItem[] = [
   { id: "overview", label: "Overview" },
-  { id: "prerequisites", label: "Prerequisites" },
-  { id: "install-keploy", label: "Installation" },
-  { id: "prepare-app", label: "Initialize & Authenticate" },
-  { id: "recording-tests", label: "Execute Traffic & Capture" },
+  { id: "why-windows-users-need-a-detour", label: "Windows WSL2 Detour" },
+  { id: "prerequisites", label: "Prerequisites & Setup" },
+  { id: "prepare-app", label: "Echo + PostgreSQL App" },
+  { id: "recording-tests", label: "Recording API Traffic" },
+  { id: "inspecting-test-artifacts", label: "Tests vs Mocks" },
   { id: "request-parameters", label: "Request Parameters" },
   { id: "aha-zero-db-proof", label: "Zero-DB Replay (A-Ha!)" },
+  { id: "architecture-overview", label: "Core Architecture" },
   { id: "catching-regressions", label: "Catching Regressions" },
   { id: "real-world-gotchas", label: "Battle-Tested Gotchas" },
+  { id: "what-this-buys-you", label: "What This Buys You" },
   { id: "ci-cd-integration", label: "CI/CD GitHub Actions" },
-  { id: "evaluation-criteria", label: "Evaluation Criteria" },
+  { id: "evaluation-criteria", label: "Evaluation Checklist" },
 ];
 
 export function TableOfContents() {

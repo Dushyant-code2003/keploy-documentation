@@ -59,6 +59,15 @@ const GOTCHAS: GotchaItem[] = [
     solution: "Move the original keploy folder aside before recording your own live traffic so your recording is 100% fresh and clean.",
     code: `mv keploy keploy-sample-original\n# After recording, verify timestamps are fresh (current year):\nhead -40 keploy/test-set-0/tests/post-url-1.yaml`,
   },
+  {
+    id: "sudo-ebpf",
+    title: "Why Keploy Needs sudo & -E PATH",
+    badge: "eBPF & Linux",
+    symptom: "sudo: keploy: command not found, or eBPF probe attach permission denied.",
+    cause: "eBPF attaches probes directly to kernel socket tracepoints which requires root privileges. However, plain 'sudo' strips user PATH environment variables, losing access to /usr/local/go/bin and Keploy.",
+    solution: "Always execute with sudo -E PATH=\"$PATH\" keploy ... to preserve your active binary search paths across privilege elevation.",
+    code: `sudo -E PATH="$PATH" keploy record -c "./echo-psql-url-shortener" --api-key "kep_YOUR_KEY"`,
+  },
 ];
 
 export function GotchaAccordion() {

@@ -42,22 +42,38 @@ export function Sidebar() {
             </a>
 
             <a
-              href="#quickstart"
+              href="#why-windows-users-need-a-detour"
+              className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors"
+            >
+              <Cpu className="w-4 h-4 text-slate-400" />
+              <span>Windows WSL2 Detour</span>
+            </a>
+
+            <a
+              href="#prepare-app"
               className="flex items-center justify-between px-3 py-1.5 rounded-lg font-semibold text-white bg-indigo-600 dark:bg-indigo-600 shadow-sm transition-all"
             >
               <div className="flex items-center gap-2.5">
                 <Terminal className="w-4 h-4 text-white" />
-                <span>Quickstart Guide</span>
+                <span>Echo + Postgres Setup</span>
               </div>
               <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
             </a>
 
             <a
-              href="#prerequisites"
+              href="#recording-tests"
               className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors"
             >
-              <Cpu className="w-4 h-4 text-slate-400" />
-              <span>Prerequisites &amp; WSL</span>
+              <ShieldCheck className="w-4 h-4 text-slate-400" />
+              <span>Record API Traffic</span>
+            </a>
+
+            <a
+              href="#inspecting-test-artifacts"
+              className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors"
+            >
+              <FileCode className="w-4 h-4 text-slate-400" />
+              <span>Tests vs Mocks</span>
             </a>
           </nav>
         </div>
@@ -119,6 +135,14 @@ export function Sidebar() {
             >
               <AlertTriangle className="w-4 h-4 text-amber-500" />
               <span>Battle-Tested Gotchas</span>
+            </a>
+
+            <a
+              href="#what-this-buys-you"
+              className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors"
+            >
+              <Sparkles className="w-4 h-4 text-emerald-500" />
+              <span>What This Buys You</span>
             </a>
 
             <a

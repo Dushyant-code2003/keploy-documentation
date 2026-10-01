@@ -66,11 +66,11 @@ export default function Home() {
             </div>
 
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tight leading-[1.12]">
-              Quickstart: Test Echo + Postgres in under 5 minutes
+              Testing a Go API <span className="text-indigo-600 dark:text-indigo-400">without touching PostgreSQL</span>
             </h1>
 
             <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
-              Learn how to authenticate, record real API calls and PostgreSQL wire mocks, and replay tests with zero running databases.
+              Record real API traffic with Keploy, then replay it as tests with auto-generated SQL wire mocks — no live database required. Written from a real Windows machine on WSL2, covering the exact parts most tutorials skip.
             </p>
 
             {/* Quick Meta Chips matching screenshot */}

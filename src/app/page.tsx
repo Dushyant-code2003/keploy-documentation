@@ -1,6 +1,5 @@
 import React from "react";
 import TutorialContent from "@/content/tutorial.mdx";
-import { Sidebar } from "@/components/Sidebar";
 import { TableOfContents } from "@/components/TableOfContents";
 import {
   Clock,
@@ -14,12 +13,9 @@ import {
 export default function Home() {
   return (
     <div className="min-h-screen bg-white dark:bg-[#070b13] text-slate-900 dark:text-slate-100 transition-colors">
-      <div className="max-w-[1600px] mx-auto flex">
-        {/* Left Column: Documentation Sidebar */}
-        <Sidebar />
-
+      <div className="max-w-6xl mx-auto flex justify-center gap-8 lg:gap-12 px-4 sm:px-6 py-8">
         {/* Center Column: Documentation Body */}
-        <main className="flex-1 min-w-0 px-4 sm:px-8 lg:px-12 py-8 max-w-4xl mx-auto">
+        <main className="flex-1 min-w-0 max-w-3xl">
           {/* Breadcrumb & GitHub Edit Bar matching screenshot */}
           <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-slate-500 dark:text-slate-400 mb-6 pb-3 border-b border-slate-200/80 dark:border-slate-800/80">
             <div className="flex items-center gap-1.5 font-medium">

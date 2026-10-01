@@ -22,7 +22,6 @@ const TOC_ITEMS: TocItem[] = [
   { id: "real-world-gotchas", label: "Battle-Tested Gotchas" },
   { id: "what-this-buys-you", label: "What This Buys You" },
   { id: "ci-cd-integration", label: "CI/CD GitHub Actions" },
-  { id: "evaluation-criteria", label: "Evaluation Checklist" },
 ];
 
 export function TableOfContents() {

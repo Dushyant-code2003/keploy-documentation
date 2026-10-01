@@ -1,3 +1,145 @@
+import { Callout } from "@/components/Callout";
+import { CodeBlock } from "@/components/CodeBlock";
+import { Tabs, TabItem } from "@/components/Tabs";
+import { QuickstartSplitViewer } from "@/components/QuickstartSplitViewer";
+import { ParametersTable } from "@/components/ParametersTable";
+import { LatencyBanner } from "@/components/LatencyBanner";
+import { ArchitectureDiagram } from "@/components/ArchitectureDiagram";
+import { TestRunSimulator } from "@/components/TestRunSimulator";
+import { GotchaAccordion } from "@/components/GotchaAccordion";
+import { NextStepsGrid } from "@/components/NextStepsGrid";
+import { FeedbackWidget } from "@/components/FeedbackWidget";
+import { EvaluationChecklist } from "@/components/EvaluationChecklist";
+
+{/* Prerequisites & Windows/WSL2 Architecture Section */}
+<div id="prerequisites" className="my-8 scroll-mt-24">
+  <div className="p-6 rounded-2xl border border-indigo-500/20 bg-gradient-to-br from-indigo-500/5 via-purple-500/5 to-transparent dark:from-indigo-950/20 dark:via-purple-950/10 dark:to-transparent">
+    <span className="text-xs font-mono font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
+      Windows &amp; Linux Developer Guide
+    </span>
+    <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white mt-1 mb-3 border-none p-0">
+      Testing Go APIs with Keploy on Windows (WSL2)
+    </h2>
+    <p className="text-sm sm:text-base text-slate-700 dark:text-slate-300 leading-relaxed font-normal">
+      I run Windows. Most Go and eBPF tutorials assume you are on Linux or macOS and tell you to run commands that silently fail or panic. This guide covers the complete, battle-tested setup using <strong>WSL2 (Windows Subsystem for Linux)</strong>, so you can run Keploy with <strong>Echo + PostgreSQL</strong> smoothly without skipping the hard parts.
+    </p>
+
+    {/* By the end of this guide callout box */}
+    <div className="mt-5 p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0c101d] shadow-sm">
+      <h4 className="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-slate-200 mb-2.5 flex items-center gap-2">
+        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+        By the end of this tutorial, you will have:
+      </h4>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs text-slate-600 dark:text-slate-400">
+        <div className="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-900/60 border border-slate-200/60 dark:border-slate-800">
+          <strong className="text-slate-900 dark:text-slate-200 block mb-1">1. Zero-Code Test Suite</strong>
+          Real HTTP requests captured into deterministic test cases without writing a single line of test code.
+        </div>
+        <div className="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-900/60 border border-slate-200/60 dark:border-slate-800">
+          <strong className="text-slate-900 dark:text-slate-200 block mb-1">2. Zero-DB Replay Proof</strong>
+          PostgreSQL network wire packets recorded so you can turn off Postgres and replay tests offline in seconds.
+        </div>
+        <div className="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-900/60 border border-slate-200/60 dark:border-slate-800">
+          <strong className="text-slate-900 dark:text-slate-200 block mb-1">3. Regression Detection</strong>
+          Proven schema validation by mutating Go struct tags and watching Keploy highlight the exact field diff.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {/* Why eBPF Matters */}
+  <div className="my-8">
+    <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100 mb-3">
+      Why eBPF Matters (And Why It Dictates Our Setup)
+    </h3>
+    <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
+      Unlike traditional testing libraries like <code>testify</code> or <code>gomock</code>, Keploy does not sit inside your Go codebase as an SDK or code dependency. Instead, Keploy runs as an operating system process that injects <strong>eBPF (extended Berkeley Packet Filter)</strong> probes directly into the Linux kernel socket layer (hooking into syscalls like <code>connect</code>, <code>sendto</code>, <code>recvfrom</code>, and <code>write</code>).
+    </p>
+    <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed mt-2">
+      Because eBPF is a native Linux kernel feature requiring Linux 5.15+, native Windows cannot execute eBPF probes directly. That is why Windows developers run their Go application inside <strong>WSL2</strong>, which runs a real Linux kernel with full eBPF support while letting you use Docker Desktop seamlessly.
+    </p>
+
+    {/* Windows Options Matrix */}
+    <div className="my-5 overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800">
+      <table className="w-full text-left text-xs sm:text-sm">
+        <thead className="bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 font-semibold border-b border-slate-200 dark:border-slate-800">
+          <tr>
+            <th className="p-3.5">Environment</th>
+            <th className="p-3.5">eBPF Support</th>
+            <th className="p-3.5">How It Works</th>
+            <th className="p-3.5">Verdict</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-slate-200 dark:divide-slate-800 text-slate-600 dark:text-slate-400">
+          <tr className="bg-indigo-50/30 dark:bg-indigo-950/10">
+            <td className="p-3.5 font-semibold text-indigo-600 dark:text-indigo-400">WSL2 (Ubuntu 22.04+)</td>
+            <td className="p-3.5 text-emerald-600 dark:text-emerald-400 font-medium">Native (Kernel 5.15+)</td>
+            <td className="p-3.5">Run app binary natively in WSL2; Postgres runs in Docker Desktop</td>
+            <td className="p-3.5"><span className="px-2 py-0.5 rounded text-[11px] font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">Recommended</span></td>
+          </tr>
+          <tr>
+            <td className="p-3.5 font-semibold text-slate-900 dark:text-slate-200">Docker-in-Docker</td>
+            <td className="p-3.5 text-slate-600 dark:text-slate-400">Supported via Wrapper</td>
+            <td className="p-3.5">Keploy and App both run in containers with custom network bridges</td>
+            <td className="p-3.5"><span className="px-2 py-0.5 rounded text-[11px] font-semibold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">Viable for CI</span></td>
+          </tr>
+          <tr>
+            <td className="p-3.5 font-semibold text-slate-900 dark:text-slate-200">Windows Native CLI</td>
+            <td className="p-3.5 text-red-500 font-medium">Not Supported</td>
+            <td className="p-3.5">Windows NT kernel lacks eBPF network socket tracing hooks</td>
+            <td className="p-3.5"><span className="px-2 py-0.5 rounded text-[11px] font-bold bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20">Unsupported</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    {/* 4 Environment Prep Steps */}
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 mt-4">
+      <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-[#0c101d]">
+        <div className="flex items-center gap-2 mb-1.5 font-bold text-xs text-slate-900 dark:text-slate-100">
+          <span className="w-5 h-5 rounded-full bg-indigo-500 text-white flex items-center justify-center text-[10px]">A</span>
+          <span>1. Verify WSL2 Kernel</span>
+        </div>
+        <p className="text-xs text-slate-600 dark:text-slate-400 leading-normal">
+          In Windows PowerShell, run <code>wsl --status</code> and <code>wsl --update</code> to ensure you are on WSL version 2 with Linux kernel 5.15+.
+        </p>
+      </div>
+
+      <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-[#0c101d]">
+        <div className="flex items-center gap-2 mb-1.5 font-bold text-xs text-slate-900 dark:text-slate-100">
+          <span className="w-5 h-5 rounded-full bg-indigo-500 text-white flex items-center justify-center text-[10px]">B</span>
+          <span>2. Install Go in WSL2</span>
+        </div>
+        <p className="text-xs text-slate-600 dark:text-slate-400 leading-normal">
+          Inside Ubuntu WSL2, install the official Go tarball (Go 1.22+). Verify with <code>go version</code>. Do not rely on Windows-side Go executables.
+        </p>
+      </div>
+
+      <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-[#0c101d]">
+        <div className="flex items-center gap-2 mb-1.5 font-bold text-xs text-slate-900 dark:text-slate-100">
+          <span className="w-5 h-5 rounded-full bg-indigo-500 text-white flex items-center justify-center text-[10px]">C</span>
+          <span>3. Docker Desktop WSL Integration</span>
+        </div>
+        <p className="text-xs text-slate-600 dark:text-slate-400 leading-normal">
+          In Docker Desktop for Windows, navigate to <em>Settings &gt; Resources &gt; WSL Integration</em> and toggle on your Ubuntu distro. Test with <code>docker ps</code> in WSL2.
+        </p>
+      </div>
+
+      <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-[#0c101d]">
+        <div className="flex items-center gap-2 mb-1.5 font-bold text-xs text-slate-900 dark:text-slate-100">
+          <span className="w-5 h-5 rounded-full bg-indigo-500 text-white flex items-center justify-center text-[10px]">D</span>
+          <span>4. Keploy API Key</span>
+        </div>
+        <p className="text-xs text-slate-600 dark:text-slate-400 leading-normal">
+          Grab your free API key from the Keploy Console. Pass it via <code>--api-key &quot;kep_YOUR_KEY&quot;</code> to bypass headless browser OAuth prompts on WSL2.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+---
+
 <div id="quickstart" className="scroll-mt-24">
 
 {/* Step 1 matching screenshot */}
@@ -11,7 +153,7 @@
     </h2>
   </div>
   <p className="text-sm text-slate-600 dark:text-slate-400 ml-11 mb-4">
-    Keploy runs as a zero-dependency binary that transparently hooks into network system calls to intercept HTTP requests and database wire protocols. Choose your environment below:
+    Keploy runs as a zero-dependency binary that transparently hooks into Linux network system calls to intercept HTTP requests and database wire protocols. Choose your environment below:
   </p>
 
   <div className="ml-0 sm:ml-11">
@@ -43,24 +185,42 @@
     </h2>
   </div>
   <p className="text-sm text-slate-600 dark:text-slate-400 ml-11 mb-4">
-    Clone the Echo URL-shortener sample, launch PostgreSQL in Docker, and point the app connection string to <code className="text-indigo-500 font-mono">localhost:5432</code> for native host execution:
+    We choose the <strong>Echo + PostgreSQL URL Shortener</strong> sample. It represents a real-world microservice: HTTP routing with Echo, dynamic URL generation, and persistent state in PostgreSQL.
   </p>
 
   <div className="ml-0 sm:ml-11 space-y-4">
     <CodeBlock
-      title="main.go"
-      language="go"
-      showLineNumbers={true}
-      code={`package main
+      title="Terminal: Setup &amp; Isolate Recording"
+      language="bash"
+      code={`# 1. Clone the official samples repository
+git clone https://github.com/keploy/samples-go.git
+cd samples-go/echo-sql
 
-import (
-    "database/sql"
-    "net/http"
-    "github.com/labstack/echo/v4"
-    _ "github.com/lib/pq"
-)
+# 2. Download Go dependencies
+go mod download
 
-// Point to localhost for native binary execution with Dockerized Postgres
+# 3. Move pre-recorded sample files aside to ensure a 100% fresh recording
+mv keploy keploy-sample-original
+
+# 4. Start ONLY PostgreSQL in Docker
+docker compose up -d postgres
+
+# 5. Verify Postgres is listening on port 5432
+docker ps`}
+    />
+
+    <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/40">
+      <h4 className="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-slate-100 mb-2">
+        The Hostname Rule (Localhost vs Docker)
+      </h4>
+      <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-3">
+        When running the Echo binary natively on the host (WSL2) with Postgres in Docker, your database connection string must point to <code>localhost:5432</code>, not <code>postgres</code>. The hostname <code>postgres</code> is only resolvable inside Docker&apos;s internal virtual network.
+      </p>
+      <CodeBlock
+        title="main.go (Connection String)"
+        language="go"
+        showLineNumbers={true}
+        code={`// Update host to localhost for native binary execution with Dockerized Postgres:
 const dbConnStr = "postgres://postgres:password@localhost:5432/url_shortener?sslmode=disable"
 
 func main() {
@@ -75,10 +235,19 @@ func main() {
     e.GET("/:id", getURLHandler(db))
     e.Logger.Fatal(e.Start(":8082"))
 }`}
+      />
+    </div>
+
+    <CodeBlock
+      title="Compile Binary (Pure Go)"
+      language="bash"
+      code={`# Build a pure, statically-linked binary without CGO dependencies
+CGO_ENABLED=0 go build -o echo-psql-url-shortener .
+ls -lh echo-psql-url-shortener`}
     />
 
-    <Callout type="warning" title="Security &amp; WSL2 Compiler Best Practice">
-      When compiling on minimal WSL2 Ubuntu, build with <code>CGO_ENABLED=0 go build -o echo-psql-url-shortener .</code> to produce a statically-linked binary that does not depend on system C header files.
+    <Callout type="warning" title="Why CGO_ENABLED=0 is Essential on WSL2">
+      Minimal Ubuntu WSL2 images often lack <code>gcc</code> and standard C runtime headers. Passing <code>CGO_ENABLED=0</code> forces the Go toolchain to produce a pure static binary, preventing dynamic library linking panics at runtime.
     </Callout>
   </div>
 </div>
@@ -94,11 +263,54 @@ func main() {
     </h2>
   </div>
   <p className="text-sm text-slate-600 dark:text-slate-400 ml-11 mb-4">
-    Start Keploy in record mode (<code className="text-indigo-500 font-mono">keploy record -c &quot;./echo-psql-url-shortener&quot;</code>), then send live requests via cURL. Keploy transparently captures the HTTP request/response and records the PostgreSQL SQL queries into mocks:
+    Launch Keploy in record mode. Keploy attaches eBPF kernel hooks, starts your compiled Go binary on port <code>8082</code>, and intercepts all inbound HTTP calls and outbound PostgreSQL TCP packets on port <code>5432</code>:
   </p>
 
-  <div className="ml-0 sm:ml-11">
+  <div className="ml-0 sm:ml-11 space-y-4">
+    <CodeBlock
+      title="Terminal 1: Start Keploy Recording"
+      language="bash"
+      code={`# Start recording session
+keploy record -c "./echo-psql-url-shortener" --api-key "kep_YOUR_KEY"
+
+# Keploy output:
+# 🐰 Keploy: Starting Keploy v3.8.57
+# 🐰 Keploy: eBPF hooks initialized successfully
+# ⇨ http server started on [::]:8082`}
+    />
+
     <QuickstartSplitViewer />
+
+    <CodeBlock
+      title="Terminal 2: Send Diverse Live Traffic"
+      language="bash"
+      code={`# Request 1: Shorten GitHub URL
+curl -X POST http://localhost:8082/url -H "Content-Type: application/json" -d '{"url": "https://github.com"}'
+
+# Request 2: Shorten Keploy URL
+curl -X POST http://localhost:8082/url -H "Content-Type: application/json" -d '{"url": "https://keploy.io"}'
+
+# Request 3: Shorten Go URL
+curl -X POST http://localhost:8082/url -H "Content-Type: application/json" -d '{"url": "https://golang.org"}'
+
+# Request 4: Test 404 Not Found error handling path
+curl -i http://localhost:8082/doesnotexist`}
+    />
+
+    <p className="text-xs text-slate-600 dark:text-slate-400">
+      Press <kbd className="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-800 font-mono text-[11px]">Ctrl+C</kbd> in Terminal 1 to stop recording. Keploy flushes test specifications to disk.
+    </p>
+
+    <CodeBlock
+      title="Terminal: Fix File Permissions &amp; Inspect Artifacts"
+      language="bash"
+      code={`# Because Keploy eBPF runs with elevated permissions, ensure your user owns the generated folder:
+sudo chown -R $USER:$USER keploy
+
+# Inspect generated test suite
+ls -la keploy/test-set-0/tests/
+# Outputs: post-url-1.yaml  post-url-2.yaml  post-url-3.yaml  get-doesnotexist-1.yaml`}
+    />
   </div>
 </div>
 
@@ -125,30 +337,104 @@ func main() {
 
 ---
 
+{/* Deep Dive: Anatomy of Generated Keploy Artifacts */}
+<div className="my-10 scroll-mt-24">
+  <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+    Anatomy of Keploy Artifacts: Tests &amp; Mocks
+  </h2>
+  <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed my-3">
+    Keploy generates human-readable YAML files divided into two distinct responsibilities: <strong>API Test Specifications</strong> and <strong>Network Wire Mocks</strong>.
+  </p>
+
+  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+    <div>
+      <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-2">
+        1. Test Spec: keploy/test-set-0/tests/post-url-1.yaml
+      </h4>
+      <CodeBlock
+        title="post-url-1.yaml"
+        language="yaml"
+        code={`version: api.keploy.io/v1beta1
+kind: Http
+name: post-url-1
+spec:
+  metadata: {}
+  req:
+    method: POST
+    proto_major: 1
+    proto_minor: 1
+    url: /url
+    header:
+      Content-Type: application/json
+    body: '{"url": "https://github.com"}'
+  resp:
+    status_code: 200
+    header:
+      Content-Type: application/json; charset=UTF-8
+    body: '{"ts": 1727823901, "url": "http://localhost:8082/a1b2c3d4"}'
+  assertions:
+    noise:
+      - body.ts # Volatile timestamp automatically filtered out!
+  created: 1727823901`}
+      />
+    </div>
+
+    <div>
+      <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-2">
+        2. Wire Mock: keploy/test-set-0/mocks.yaml
+      </h4>
+      <CodeBlock
+        title="mocks.yaml"
+        language="yaml"
+        code={`version: api.keploy.io/v1beta1
+kind: Generic
+name: mock-postgres-query-1
+spec:
+  metadata:
+    type: postgres
+    port: 5432
+  req:
+    # SQL query captured at TCP socket layer
+    payload: "INSERT INTO urls(id, original_url) VALUES ($1, $2)"
+  resp:
+    # Binary tabular response stream from PostgreSQL
+    payload: "INSERT 0 1"
+    latency: 1.8ms`}
+      />
+    </div>
+  </div>
+
+  <Callout type="tip" title="Why assertions.noise Eliminates Flaky Tests">
+    Notice <code>assertions.noise: [ body.ts ]</code>. In traditional integration testing, dynamically generated fields like Unix timestamps, auto-incremented primary keys, or UUIDs cause tests to fail on replay. Keploy identifies non-deterministic fields automatically and marks them as noise, ensuring test re-runs are 100% deterministic without brittle manual regex mocks.
+  </Callout>
+</div>
+
+---
+
 {/* Section: The A-Ha Moment */}
 <div id="aha-zero-db-proof" className="my-10 scroll-mt-24">
   <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
     The &quot;A-Ha!&quot; Moment: Testing with Database Stopped
   </h2>
   <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed my-3">
-    Here is the superpower of Keploy: **you do not need a live database to run integration tests.**
+    Here is the superpower of Keploy: <strong>you do not need a live database to run your integration test suite.</strong> Let&apos;s stop PostgreSQL completely and prove it:
   </p>
 
   <CodeBlock
     title="Terminal"
     language="bash"
-    code={`# 1. Stop PostgreSQL container completely
+    code={`# 1. Stop the PostgreSQL container
 docker compose stop postgres
 
-# 2. Confirm database is offline
+# 2. Confirm database is 100% offline
 docker ps  # (Must NOT list postgres)
 
-# 3. Replay tests via Keploy
+# 3. Replay tests via Keploy in zero-DB mode
 keploy test -c "./echo-psql-url-shortener" --delay 10 --api-key "kep_YOUR_KEY"`}
   />
 
-  <Callout type="aha" title="Why This Works">
-    When your Go binary queries <code>localhost:5432</code>, Keploy&apos;s eBPF proxy intercepts the TCP connection at the kernel level and serves the exact pre-recorded PostgreSQL handshake and SQL response from <code>keploy/test-set-0/mocks.yaml</code>. All 3 tests pass in seconds with zero live database dependencies!
+  <Callout type="aha" title="What Happened Under the Hood">
+    When your Go binary starts and attempts to execute <code>sql.Open(&quot;postgres&quot;, &quot;localhost:5432&quot;)</code>, Keploy&apos;s eBPF kernel proxy traps the outgoing TCP SYN packet to port 5432. Instead of letting the connection fail with <em>connection refused</em>, Keploy acts as the PostgreSQL server, replaying the pre-recorded binary packets from <code>mocks.yaml</code>. All 4 tests execute and pass in under 2.5 seconds!
   </Callout>
 </div>
 
@@ -160,28 +446,39 @@ keploy test -c "./echo-psql-url-shortener" --delay 10 --api-key "kep_YOUR_KEY"`}
     Catching Regressions on Purpose
   </h2>
   <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed my-3">
-    To prove Keploy catches breaking schema changes, let&apos;s mutate <code>handler.go</code> line 39 by renaming the JSON struct tag from <code>json:&quot;url&quot;</code> to <code>json:&quot;short_url&quot;</code>:
+    To prove Keploy catches breaking schema regressions, let&apos;s mutate <code>handler.go</code>. In the <code>successResponse</code> struct, rename the JSON tag from <code>json:&quot;url&quot;</code> to <code>json:&quot;short_url&quot;</code>:
   </p>
 
   <CodeBlock
     title="handler.go (Mutated)"
     language="go"
     showLineNumbers={true}
-    code={`type successResponse struct {
+    code={`// handler.go - Simulating a breaking API contract change
+type successResponse struct {
     TS  int64  \`json:"ts"\`
     URL string \`json:"short_url"\` // Changed from "url" to "short_url"
 }`}
   />
 
   <CodeBlock
-    title="Recompile & Run Test"
+    title="Terminal: Recompile &amp; Test"
     language="bash"
-    code={`CGO_ENABLED=0 go build -o echo-psql-url-shortener .
+    code={`# Recompile pure binary
+CGO_ENABLED=0 go build -o echo-psql-url-shortener .
+
+# Run test replay
 keploy test -c "./echo-psql-url-shortener" --delay 10 --api-key "kep_YOUR_KEY"`}
   />
 
-  <Callout type="danger" title="Regression Detected">
-    Keploy immediately flags <code>post-url-1</code> as <strong>FAILED</strong>, displaying the exact JSON key mismatch between the recorded contract (<code>&quot;url&quot;</code>) and actual response (<code>&quot;short_url&quot;</code>). Undoing the change with <code>git checkout handler.go</code> restores the test suite to 100% green!
+  <Callout type="danger" title="Regression Flagged: Exact Key Mismatch Diff">
+    Keploy immediately flags test <code>post-url-1</code> as <strong>FAILED</strong>. The CLI prints a colorized diff:
+    <br />
+    <span className="font-mono text-xs">
+      - &quot;url&quot;: &quot;http://localhost:8082/a1b2c3d4&quot;<br />
+      + &quot;short_url&quot;: &quot;http://localhost:8082/a1b2c3d4&quot;
+    </span>
+    <br />
+    Revert the mutation with <code>git checkout handler.go &amp;&amp; CGO_ENABLED=0 go build -o echo-psql-url-shortener .</code> and tests immediately return to 100% green.
   </Callout>
 </div>
 
@@ -189,6 +486,52 @@ keploy test -c "./echo-psql-url-shortener" --delay 10 --api-key "kep_YOUR_KEY"`}
 
 {/* Interactive Replay Simulator */}
 <TestRunSimulator />
+
+---
+
+{/* Section: What This Actually Buys You */}
+<div className="my-10 scroll-mt-24">
+  <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100 mb-4">
+    What This Actually Buys You
+  </h2>
+  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div className="p-5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0c101d] shadow-sm">
+      <div className="w-8 h-8 rounded-lg bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 font-bold flex items-center justify-center mb-3">
+        ⚡
+      </div>
+      <h3 className="font-bold text-sm text-slate-900 dark:text-slate-100 mb-1">
+        CI Without Dependencies
+      </h3>
+      <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+        No need to spin up PostgreSQL containers or manage Docker Compose healthchecks in GitHub Actions. Tests run against static wire mocks in seconds.
+      </p>
+    </div>
+
+    <div className="p-5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0c101d] shadow-sm">
+      <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold flex items-center justify-center mb-3">
+        🛡️
+      </div>
+      <h3 className="font-bold text-sm text-slate-900 dark:text-slate-100 mb-1">
+        Mocks That Never Drift
+      </h3>
+      <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+        Handwritten mocks drift from reality when database columns or constraints change. Keploy captures real TCP wire bytes, ensuring 100% protocol fidelity.
+      </p>
+    </div>
+
+    <div className="p-5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0c101d] shadow-sm">
+      <div className="w-8 h-8 rounded-lg bg-purple-500/10 text-purple-600 dark:text-purple-400 font-bold flex items-center justify-center mb-3">
+        ✨
+      </div>
+      <h3 className="font-bold text-sm text-slate-900 dark:text-slate-100 mb-1">
+        Zero Test Code Maintenance
+      </h3>
+      <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+        Say goodbye to maintaining thousands of lines of boilerplate table tests and mock interfaces. Your real traffic becomes your regression test suite.
+      </p>
+    </div>
+  </div>
+</div>
 
 ---
 
@@ -205,7 +548,7 @@ keploy test -c "./echo-psql-url-shortener" --delay 10 --api-key "kep_YOUR_KEY"`}
     Production CI/CD Automation (GitHub Actions)
   </h2>
   <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed my-3">
-    Because Keploy integration tests require zero running databases, your GitHub Actions workflow runs in under 30 seconds:
+    Because Keploy tests replay against recorded wire mocks without any running database containers, your GitHub Actions pipeline executes in under 25 seconds:
   </p>
 
   <CodeBlock
@@ -237,11 +580,48 @@ jobs:
       - name: Install Keploy CLI
         run: curl --silent -O -L https://keploy.io/install.sh && bash install.sh -isCI
 
-      - name: Replay Tests (Zero DB)
+      - name: Replay Tests (Zero Database Required)
         env:
           KEPLOY_API_KEY: \${{ secrets.KEPLOY_API_KEY }}
         run: keploy test -c "./echo-psql-url-shortener" --delay 10`}
   />
+</div>
+
+---
+
+{/* Quick Answers / FAQ Accordion */}
+<div className="my-10">
+  <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100 mb-4">
+    Frequently Asked Questions
+  </h2>
+  <div className="space-y-3 text-sm">
+    <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-[#0c101d]">
+      <h4 className="font-bold text-slate-900 dark:text-slate-100 mb-1">
+        Why does Keploy need sudo/root privileges?
+      </h4>
+      <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+        Linux requires <code>CAP_SYS_ADMIN</code> or root access to load eBPF bytecode programs into the kernel socket subsystem. Keploy uses these hooks strictly to trace inbound and outbound TCP network packets.
+      </p>
+    </div>
+
+    <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-[#0c101d]">
+      <h4 className="font-bold text-slate-900 dark:text-slate-100 mb-1">
+        Does Keploy modify my Go code or binary?
+      </h4>
+      <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+        No. Keploy operates as an external supervisor process using eBPF probes. It does not inject imports, modify ASTs, or alter your production binary in any way.
+      </p>
+    </div>
+
+    <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-[#0c101d]">
+      <h4 className="font-bold text-slate-900 dark:text-slate-100 mb-1">
+        Can I run this against MongoDB or gRPC services too?
+      </h4>
+      <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+        Yes! Keploy natively parses HTTP, gRPC, PostgreSQL, MySQL, Redis, and MongoDB wire protocols at the socket layer.
+      </p>
+    </div>
+  </div>
 </div>
 
 ---

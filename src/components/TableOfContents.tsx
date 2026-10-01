@@ -9,19 +9,17 @@ interface TocItem {
 }
 
 const TOC_ITEMS: TocItem[] = [
-  { id: "overview", label: "Overview" },
-  { id: "why-windows-users-need-a-detour", label: "Windows WSL2 Detour" },
-  { id: "prerequisites", label: "Prerequisites & Setup" },
-  { id: "prepare-app", label: "Echo + PostgreSQL App" },
-  { id: "recording-tests", label: "Recording API Traffic" },
-  { id: "inspecting-test-artifacts", label: "Tests vs Mocks" },
-  { id: "request-parameters", label: "Request Parameters" },
-  { id: "aha-zero-db-proof", label: "Zero-DB Replay (A-Ha!)" },
-  { id: "architecture-overview", label: "Core Architecture" },
-  { id: "catching-regressions", label: "Catching Regressions" },
-  { id: "real-world-gotchas", label: "Battle-Tested Gotchas" },
-  { id: "what-this-buys-you", label: "What This Buys You" },
-  { id: "ci-cd-integration", label: "CI/CD GitHub Actions" },
+  { id: "why-windows-users-need-a-detour", label: "Why Windows Users Need a Detour" },
+  { id: "setting-up-wsl2--ubuntu", label: "Setting up WSL2 + Ubuntu" },
+  { id: "installing-go", label: "Installing Go" },
+  { id: "installing-keploy", label: "Installing Keploy" },
+  { id: "docker-desktop--wsl-integration", label: "Docker Desktop + WSL Integration" },
+  { id: "running-the-echo--postgresql-sample", label: "Running the Echo + PostgreSQL Sample" },
+  { id: "recording-test-cases", label: "Recording Test Cases" },
+  { id: "replaying-without-postgresql", label: "Replaying Without PostgreSQL" },
+  { id: "the-bug-that-taught-me-the-most", label: "The Bug That Taught Me the Most" },
+  { id: "quick-answers", label: "Quick Answers" },
+  { id: "what-this-actually-buys-you", label: "What This Actually Buys You" },
 ];
 
 export function TableOfContents() {

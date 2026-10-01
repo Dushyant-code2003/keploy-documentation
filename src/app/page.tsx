@@ -49,99 +49,60 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Header Badges matching screenshot */}
-          <div id="overview" className="space-y-4 mb-8 scroll-mt-24">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20">
-                <span className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
-                Getting Started
+          {/* Hero Section matching benchmark id="top" */}
+          <section id="top" className="space-y-5 mb-10 pb-8 border-b border-slate-200 dark:border-slate-800 scroll-mt-24 text-center sm:text-left">
+            <div className="flex flex-wrap items-center gap-2 justify-center sm:justify-start">
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-600 text-white shadow-xs">
+                Keploy Quickstart
               </span>
-              <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-semibold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
-                Core v3.8.57
+              <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-medium border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                Go
+              </span>
+              <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-medium border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                Echo
+              </span>
+              <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-medium border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                PostgreSQL
+              </span>
+              <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-medium border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                WSL2
               </span>
             </div>
 
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tight leading-[1.12]">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tight leading-[1.15]">
               Testing a Go API <span className="text-indigo-600 dark:text-indigo-400">without touching PostgreSQL</span>
             </h1>
 
-            <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
-              Record real API traffic with Keploy, then replay it as tests with auto-generated SQL wire mocks — no live database required. Written from a real Windows machine on WSL2, covering the exact parts most tutorials skip.
+            <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed font-normal max-w-2xl">
+              Record real API traffic with Keploy, then replay it as tests with auto-generated mocks, no live database required. Written from a real Windows machine, including the parts most tutorials skip.
             </p>
 
-            {/* Quick Meta Chips matching screenshot */}
-            <div className="flex flex-wrap items-center gap-3 pt-2 text-xs text-slate-600 dark:text-slate-400">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 font-medium">
-                <Clock className="w-3.5 h-3.5 text-indigo-500" />
-                <span>Estimated time: 5 min</span>
-              </div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 font-medium">
-                <Key className="w-3.5 h-3.5 text-emerald-500" />
-                <span>Prerequisite: Free Keploy API Key</span>
-              </div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 font-medium">
-                <Layers className="w-3.5 h-3.5 text-purple-500" />
-                <span>Supported: Go (Echo), PostgreSQL, WSL2</span>
-              </div>
-            </div>
-
-            {/* 3 Quick Action Cards (Grid of 3 matching screenshot) */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-4">
+            {/* CTA Buttons matching benchmark */}
+            <div className="flex flex-wrap items-center gap-3 pt-2 justify-center sm:justify-start">
               <a
-                href="#recording-tests"
-                className="group p-4 rounded-xl border border-slate-200 dark:border-slate-800/80 bg-slate-50/70 dark:bg-[#0d111c] hover:border-indigo-500/50 dark:hover:border-indigo-500/50 hover:shadow-sm transition-all"
+                href="#why-windows-users-need-a-detour"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium shadow-sm transition-all"
               >
-                <div className="flex items-center justify-between mb-2">
-                  <span className="w-7 h-7 rounded-lg bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 font-mono font-bold text-xs flex items-center justify-center border border-indigo-500/20">
-                    01
-                  </span>
-                  <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-indigo-500 group-hover:translate-x-0.5 transition-all" />
-                </div>
-                <h4 className="font-bold text-xs md:text-sm text-slate-900 dark:text-slate-100">
-                  Record Traffic
-                </h4>
-                <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-normal">
-                  Capture live HTTP &amp; PostgreSQL network packets without code changes.
-                </p>
+                <span>Start the tutorial</span>
+                <ChevronRight className="w-4 h-4 rotate-90" />
               </a>
 
               <a
-                href="#aha-zero-db-proof"
-                className="group p-4 rounded-xl border border-slate-200 dark:border-slate-800/80 bg-slate-50/70 dark:bg-[#0d111c] hover:border-emerald-500/50 dark:hover:border-emerald-500/50 hover:shadow-sm transition-all"
+                href="https://keploy.io/docs/quickstart/samples-echo/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 text-sm font-medium transition-all"
               >
-                <div className="flex items-center justify-between mb-2">
-                  <span className="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-mono font-bold text-xs flex items-center justify-center border border-emerald-500/20">
-                    02
-                  </span>
-                  <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-emerald-500 group-hover:translate-x-0.5 transition-all" />
-                </div>
-                <h4 className="font-bold text-xs md:text-sm text-slate-900 dark:text-slate-100">
-                  Zero-DB Replay
-                </h4>
-                <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-normal">
-                  Stop Postgres and run tests purely against recorded mocks.
-                </p>
-              </a>
-
-              <a
-                href="#catching-regressions"
-                className="group p-4 rounded-xl border border-slate-200 dark:border-slate-800/80 bg-slate-50/70 dark:bg-[#0d111c] hover:border-purple-500/50 dark:hover:border-purple-500/50 hover:shadow-sm transition-all"
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <span className="w-7 h-7 rounded-lg bg-purple-500/10 text-purple-600 dark:text-purple-400 font-mono font-bold text-xs flex items-center justify-center border border-purple-500/20">
-                    03
-                  </span>
-                  <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-purple-500 group-hover:translate-x-0.5 transition-all" />
-                </div>
-                <h4 className="font-bold text-xs md:text-sm text-slate-900 dark:text-slate-100">
-                  Catch Regressions
-                </h4>
-                <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-normal">
-                  Mutate Go struct tags and watch Keploy pinpoint schema diffs.
-                </p>
+                <span>Official quickstart</span>
               </a>
             </div>
-          </div>
+
+            {/* Meta chip matching benchmark */}
+            <div className="pt-2 text-xs text-slate-500 dark:text-slate-400 flex items-center gap-2 justify-center sm:justify-start">
+              <Clock className="w-3.5 h-3.5" />
+              <span>~20 minute read · beginner friendly · no Keploy experience assumed</span>
+            </div>
+          </section>
 
           <hr className="my-8 border-slate-200 dark:border-slate-800" />
 

@@ -181,6 +181,15 @@ keploy --version`}
       <p className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
         This opens a browser tab to sign in. You have about a minute before the auth code expires, if you&apos;re slow to switch tabs, it&apos;ll time out and you&apos;ll just need to re-run the command.
       </p>
+
+      <Callout type="info" title="Why I choose --api-key over direct browser authentication">
+        While <code>keploy login</code> works when a desktop browser is directly attached, I chose to authenticate using <code>--api-key &quot;kep_YOUR_KEY&quot;</code> directly in the CLI commands for three major reasons:
+        <ul className="mt-2 space-y-1.5 list-disc pl-5 text-sm leading-relaxed">
+          <li><strong>Headless WSL2 Timeout:</strong> In WSL2, opening the Windows default browser over the virtualized network bridge often hangs or exceeds the 60-second OAuth callback window, producing <code>unexpected status 401: invalid or expired code</code>.</li>
+          <li><strong>Root / Sudo Credential Isolation:</strong> Keploy requires <code>sudo</code> for eBPF kernel network socket hooks. When running under <code>sudo</code>, Linux switches to root, which looks for tokens in <code>/root/.keploy/</code> rather than your user directory (<code>/home/username/.keploy/</code>). Passing <code>--api-key</code> provides instant authentication directly to the root supervisor process.</li>
+          <li><strong>Deterministic &amp; CI/CD Ready:</strong> Interactive browser prompts cannot run in headless CI/CD runners (like GitHub Actions). Passing <code>--api-key</code> (or setting the <code>KEPLOY_API_KEY</code> environment variable) guarantees reproducible, automated test execution everywhere.</li>
+        </ul>
+      </Callout>
     </div>
   </div>
 
@@ -279,8 +288,12 @@ go mod download`}
   code='sudo -E PATH="$PATH" keploy record -c "./echo-psql-url-shortener" --api-key "kep_YOUR_KEY"'
 />
 
-<Callout type="info" title="Why sudo?">
-  Keploy needs to intercept traffic at the network layer via eBPF, which requires root. This is also why the <code>PATH</code> needs to be explicitly passed through with <code>-E PATH=&quot;$PATH&quot;</code>, otherwise <code>sudo</code> resets your environment and can&apos;t find your Go binary. (If your Windows username has spaces or your <code>$PATH</code> includes Windows paths with spaces in them, quote <code>$PATH</code>, an unquoted variable here silently breaks the command.)
+<Callout type="info" title="Why sudo and why --api-key?">
+  <p>Two critical environment requirements are handled in this single command:</p>
+  <ul className="mt-2 space-y-1.5 list-disc pl-5 text-sm leading-relaxed">
+    <li><strong>eBPF requires root:</strong> Intercepting kernel TCP sockets requires elevated privileges (<code>sudo</code>). Passing <code>-E PATH=&quot;$PATH&quot;</code> preserves your Go and Keploy binary search paths so root can locate them without resetting your shell environment.</li>
+    <li><strong>Root session authentication:</strong> Because <code>sudo</code> isolates home directory configs, the root process cannot read tokens saved under <code>/home/username/.keploy/</code>. Passing <code>--api-key &quot;kep_YOUR_KEY&quot;</code> directly authenticates the root supervisor process immediately, completely bypassing browser popups and timeout issues.</li>
+  </ul>
 </Callout>
 
 <p className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">

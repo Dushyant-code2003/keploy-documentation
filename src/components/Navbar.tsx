@@ -1,135 +1,42 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import { ThemeToggle } from "./ThemeToggle";
-import {
-  Search,
-  Star,
-  Terminal,
-  User,
-  Command,
-} from "lucide-react";
 
 export function Navbar() {
-  const [searchFocused, setSearchFocused] = useState(false);
-
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-slate-200/80 dark:border-slate-800/80 bg-white/90 dark:bg-[#070b13]/90 backdrop-blur-md">
-      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
-        {/* Left: Brand + Version Badge */}
-        <div className="flex items-center gap-6">
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-600 via-indigo-500 to-purple-500 text-white flex items-center justify-center font-bold text-base shadow-md shadow-indigo-500/20 group-hover:scale-105 transition-transform">
-              🐰
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="font-extrabold text-base tracking-tight text-slate-900 dark:text-white">
-                KeployDocs
-              </span>
-              <span className="px-2 py-0.5 text-[10px] font-mono font-semibold rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20">
-                v3.8.57
-              </span>
-            </div>
-          </Link>
+    <header className="sticky top-0 z-50 w-full border-b border-slate-200/80 dark:border-slate-800/80 bg-white/80 dark:bg-[#070b13]/80 backdrop-blur-md">
+      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
+        {/* Brand */}
+        <Link href="#top" className="flex items-center gap-2.5 group">
+          <span className="grid size-7 place-items-center rounded-lg bg-indigo-600 text-white font-bold text-sm shadow-sm group-hover:scale-105 transition-transform">
+            K
+          </span>
+          <span className="text-[15px] font-semibold tracking-tight text-slate-900 dark:text-white">
+            Keploy <span className="text-slate-500 font-normal">Tutorial</span>
+          </span>
+        </Link>
 
-          {/* Center Links (Desktop) */}
-          <nav className="hidden xl:flex items-center gap-5 text-xs font-medium text-slate-600 dark:text-slate-400">
-            <a
-              href="#overview"
-              className="text-slate-900 dark:text-white font-semibold transition-colors"
-            >
-              Guides
-            </a>
-            <a
-              href="#prerequisites"
-              className="hover:text-slate-900 dark:hover:text-white transition-colors"
-            >
-              API Reference
-            </a>
-            <a
-              href="#architecture-overview"
-              className="hover:text-slate-900 dark:hover:text-white transition-colors"
-            >
-              Architecture
-            </a>
-            <a
-              href="#aha-zero-db-proof"
-              className="hover:text-slate-900 dark:hover:text-white transition-colors"
-            >
-              eBPF Core
-            </a>
-            <a
-              href="#real-world-gotchas"
-              className="hover:text-slate-900 dark:hover:text-white transition-colors"
-            >
-              Troubleshooting
-            </a>
-            <a
-              href="https://github.com/keploy/keploy"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-slate-900 dark:hover:text-white transition-colors"
-            >
-              Community
-            </a>
-          </nav>
-        </div>
+        {/* Right Action Icons: Badge, GitHub, ThemeToggle */}
+        <div className="flex items-center gap-2">
+          <span className="hidden sm:inline-flex items-center rounded-full border border-slate-200 dark:border-slate-800 bg-slate-100/70 dark:bg-slate-900/60 px-2.5 py-0.5 text-xs font-mono font-medium text-slate-600 dark:text-slate-400">
+            Go · Echo · PostgreSQL
+          </span>
 
-        {/* Right: Search, GitHub Star, ThemeToggle, Primary Action, Profile */}
-        <div className="flex items-center gap-2.5 sm:gap-3">
-          {/* Quick Search Bar */}
-          <div className="relative hidden md:block w-48 lg:w-64">
-            <div
-              className={`flex items-center justify-between px-3 py-1.5 rounded-lg border text-xs text-slate-500 dark:text-slate-400 bg-slate-100/70 dark:bg-slate-900/60 transition-all ${
-                searchFocused
-                  ? "border-indigo-500 ring-2 ring-indigo-500/20 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200"
-                  : "border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700"
-              }`}
-            >
-              <div className="flex items-center gap-2">
-                <Search className="w-3.5 h-3.5 text-slate-400" />
-                <input
-                  type="text"
-                  placeholder="Search docs..."
-                  onFocus={() => setSearchFocused(true)}
-                  onBlur={() => setSearchFocused(false)}
-                  className="bg-transparent border-none outline-none text-xs w-full text-slate-800 dark:text-slate-200 placeholder:text-slate-400"
-                />
-              </div>
-              <kbd className="hidden sm:inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[10px] font-mono text-slate-400 bg-slate-200 dark:bg-slate-800 rounded border border-slate-300 dark:border-slate-700">
-                <Command className="w-2.5 h-2.5" />K
-              </kbd>
-            </div>
-          </div>
-
-          {/* GitHub Star Button */}
           <a
             href="https://github.com/keploy/keploy"
             target="_blank"
-            rel="noopener noreferrer"
-            className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors shadow-sm"
+            rel="noreferrer"
+            aria-label="Keploy on GitHub"
+            className="inline-flex size-8 items-center justify-center rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition-colors"
           >
-            <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
-            <span className="font-semibold">12.4k</span>
+            <svg viewBox="0 0 24 24" fill="currentColor" className="size-4.5">
+              <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.76 2.69 1.25 3.35.96.1-.75.4-1.25.72-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.16-1.18 3.16-1.18.63 1.59.24 2.76.12 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.69 5.38-5.26 5.66.41.36.78 1.06.78 2.14 0 1.55-.01 2.79-.01 3.17 0 .31.2.67.8.55A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z" />
+            </svg>
           </a>
 
-          {/* Dark / Light Mode Toggle */}
           <ThemeToggle />
-
-          {/* Primary Action Button (Matches Screenshot) */}
-          <a
-            href="#quickstart"
-            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-500 shadow-md shadow-indigo-600/20 transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          >
-            <Terminal className="w-3.5 h-3.5" />
-            <span>CLI Quickstart</span>
-          </a>
-
-          {/* User Profile Avatar */}
-          <div className="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 flex items-center justify-center text-slate-600 dark:text-slate-400 text-xs font-bold">
-            <User className="w-4 h-4" />
-          </div>
         </div>
       </div>
     </header>

@@ -25,12 +25,12 @@ const GOTCHAS: GotchaItem[] = [
   },
   {
     id: "browser-auth",
-    title: "Headless Browser OAuth Timeout in WSL2",
-    badge: "Keploy Auth",
-    symptom: "Opening browser for authentication... Error: authentication timed out after 1 minute; unexpected status 401: invalid or expired code.",
-    cause: "WSL2 running in a headless CLI cannot automatically open your Windows default browser to complete the interactive OAuth callback.",
-    solution: "Use the non-interactive manual login flag or pass your Keploy API key directly via the --api-key flag in recording and testing commands.",
-    code: `# Option A: Interactive manual login prompt\nkeploy login --manual-login\n\n# Option B: Direct CLI flag injection\nkeploy record -c "./echo-psql-url-shortener" --api-key "kep_YOUR_KEY"`,
+    title: "Why Use the API Key Command Over Direct Browser Login?",
+    badge: "Keploy Auth & WSL2",
+    symptom: "Opening browser for authentication... Error: authentication timed out after 1 minute; unexpected status 401: invalid or expired code, or root cannot find credentials.",
+    cause: "WSL2 runs headlessly without a native GUI browser callback, and Keploy commands run under 'sudo' (which isolates user credentials stored in ~/.keploy/ from root).",
+    solution: "Pass your API key directly via the --api-key flag (or set KEPLOY_API_KEY). This bypasses desktop browser popups entirely and immediately authenticates the root supervisor process.",
+    code: `# Option A: Direct CLI flag injection (works locally and in CI/CD)\nsudo -E PATH="$PATH" keploy record -c "./echo-psql-url-shortener" --api-key "kep_YOUR_KEY"\n\n# Option B: Environment variable injection\nexport KEPLOY_API_KEY="kep_YOUR_KEY"`,
   },
   {
     id: "cgo-compile",

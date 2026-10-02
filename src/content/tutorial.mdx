@@ -1,40 +1,43 @@
-{/* Benchmark opening */}
-I run Windows. Most Go tutorials assume you don’t. This guide covers the full WSL2 setup so you can use Keploy without skipping the hard parts.
+{/* Unique Introduction */}
+Integration testing backend microservices usually forces developers into a frustrating tradeoff: spin up heavy Docker containers with brittle database seeds in CI, or burn hours maintaining hand-written mocks that quietly drift away from production schemas.
+
+While evaluating Keploy for Go APIs, I tested a live **Echo REST application backed by PostgreSQL** directly on a Windows development workstation. Rather than requiring intrusive code instrumentation or custom test interfaces, Keploy attaches non-invasive **eBPF probes** directly to the Linux kernel network layer — recording live HTTP requests and binary PostgreSQL wire-protocol frames as you call your endpoints.
 
 {/* Key takeaways card with 3D scroll-zoom and parallax */}
 <ThreeDCard className="my-6 rounded-xl" enableScrollZoom={true} enableTilt={true} depth={6}>
   <div className="rounded-xl border border-[#EDE6DA] dark:border-[#332F28] bg-white dark:bg-[#1C1A17] p-6 shadow-xs">
     <h3 className="font-serif text-lg font-semibold text-[#1D1B18] dark:text-[#FAF8F4] mb-3.5">
-      By the end of this, you&apos;ll have:
+      What you will accomplish in this walkthrough:
     </h3>
     <ul className="space-y-2.5 text-sm text-[#5C564E] dark:text-[#C5BEB5] leading-relaxed">
       <li className="flex gap-2.5 items-start">
         <span className="text-[#5E7E5A] dark:text-[#88AC84] font-bold shrink-0 mt-0.5">✓</span>
-        <span>A Go + Echo + PostgreSQL URL shortener API running locally</span>
+        <span><strong>WSL2 &amp; eBPF Kernel Setup:</strong> Configure an isolated Ubuntu environment with full Linux kernel socket visibility.</span>
       </li>
       <li className="flex gap-2.5 items-start">
         <span className="text-[#5E7E5A] dark:text-[#88AC84] font-bold shrink-0 mt-0.5">✓</span>
-        <span>Keploy recording your real API calls as test cases and SQL mocks</span>
+        <span><strong>Headless Token Authentication:</strong> Pass <code>--api-key</code> directly to bypass WSL2 browser callback timeouts and root privilege boundaries.</span>
       </li>
       <li className="flex gap-2.5 items-start">
         <span className="text-[#5E7E5A] dark:text-[#88AC84] font-bold shrink-0 mt-0.5">✓</span>
-        <span>Those tests replaying without PostgreSQL running, using auto-generated mocks</span>
+        <span><strong>Zero-Code Wire Capture:</strong> Record real cURL traffic into version-controlled test sets and byte-level PostgreSQL SQL mocks.</span>
+      </li>
+      <li className="flex gap-2.5 items-start">
+        <span className="text-[#5E7E5A] dark:text-[#88AC84] font-bold shrink-0 mt-0.5">✓</span>
+        <span><strong>Deterministic Zero-DB Replay:</strong> Replay the entire regression suite with PostgreSQL stopped dead, validating contract regression catches.</span>
       </li>
     </ul>
   </div>
 </ThreeDCard>
 
 {/* eBPF explanation callout */}
-<Callout type="info" title="How Keploy pulls this off">
-  Keploy uses eBPF to intercept network calls at the kernel level. That&apos;s the whole trick, it doesn&apos;t sit <em>inside</em> your code as a library, it sits <em>around</em> your app as a process, watching everything that goes in and out over the network.
+<Callout type="info" title="How Keploy Intercepts Traffic">
+  Keploy uses Linux eBPF (extended Berkeley Packet Filter) to observe network traffic at the kernel socket layer. It does not wrap your Go code as an imported library; it runs alongside your application as a supervisor process, observing every inbound HTTP request and outbound PostgreSQL TCP packet without modifying a single line of your application code.
 </Callout>
-
-{/* Interactive 3D Kernel Pipeline Visualizer */}
-<ThreeDArchitectureVisualizer />
 
 {/* Section: Why Windows Users Need a Detour */}
 <h2 id="why-windows-users-need-a-detour" className="group flex scroll-mt-24 items-center gap-2 font-serif font-semibold tracking-tight mt-14 mb-4 border-b border-[#EDE6DA] dark:border-[#332F28] pb-3 text-2xl sm:text-[1.7rem] text-[#1D1B18] dark:text-[#FAF8F4]">
-  Why Windows Users Need a Detour
+  1. The Linux Kernel Bridge: Running eBPF on Windows
   <a href="#why-windows-users-need-a-detour" aria-label="Link to section" className="text-[#B89B6A] dark:text-[#D9C6A5] opacity-0 group-hover:opacity-100 transition-opacity">#</a>
 </h2>
 
@@ -216,7 +219,7 @@ keploy --version`}
 
 {/* Section: Running the Echo + PostgreSQL Sample */}
 <h2 id="running-the-echo--postgresql-sample" className="group flex scroll-mt-24 items-center gap-2 font-serif font-semibold tracking-tight mt-14 mb-4 border-b border-[#EDE6DA] dark:border-[#332F28] pb-3 text-2xl sm:text-[1.7rem] text-[#1D1B18] dark:text-[#FAF8F4]">
-  Running the Echo + PostgreSQL Sample
+  2. Initializing Echo &amp; PostgreSQL URL Shortener
   <a href="#running-the-echo--postgresql-sample" aria-label="Link to section" className="text-[#B89B6A] dark:text-[#D9C6A5] opacity-0 group-hover:opacity-100 transition-opacity">#</a>
 </h2>
 
@@ -263,7 +266,7 @@ Build the app:
 
 {/* Sub-section: Recording Test Cases */}
 <h3 id="recording-test-cases" className="group flex scroll-mt-24 items-center gap-2 font-serif font-semibold tracking-tight mt-10 mb-3 text-xl text-[#1D1B18] dark:text-[#FAF8F4]">
-  Recording Test Cases
+  3. Recording Wire Traffic: Non-Invasive eBPF Capture
   <a href="#recording-test-cases" aria-label="Link to section" className="text-[#B89B6A] dark:text-[#D9C6A5] opacity-0 group-hover:opacity-100 transition-opacity">#</a>
 </h3>
 
@@ -343,7 +346,7 @@ You&apos;ll find two things in there:
 
 {/* Sub-section: Replaying Without PostgreSQL */}
 <h3 id="replaying-without-postgresql" className="group flex scroll-mt-24 items-center gap-2 font-serif font-semibold tracking-tight mt-10 mb-3 text-xl text-[#1D1B18] dark:text-[#FAF8F4]">
-  Replaying Without PostgreSQL
+  4. Zero-DB Test Replay: Validating Wire Mocks
   <a href="#replaying-without-postgresql" aria-label="Link to section" className="text-[#B89B6A] dark:text-[#D9C6A5] opacity-0 group-hover:opacity-100 transition-opacity">#</a>
 </h3>
 
@@ -365,7 +368,7 @@ Keploy replays your exact curl calls against a fresh instance of the app, but in
 
 {/* Sub-section: The Bug That Taught Me the Most */}
 <h3 id="the-bug-that-taught-me-the-most" className="group flex scroll-mt-24 items-center gap-2 font-serif font-semibold tracking-tight mt-10 mb-3 text-xl text-[#1D1B18] dark:text-[#FAF8F4]">
-  The Bug That Taught Me the Most
+  5. The Loopback Bug &amp; Catching Breaking Schema Changes
   <a href="#the-bug-that-taught-me-the-most" aria-label="Link to section" className="text-[#B89B6A] dark:text-[#D9C6A5] opacity-0 group-hover:opacity-100 transition-opacity">#</a>
 </h3>
 
@@ -417,7 +420,7 @@ With dynamic fields placed in the noise list, the test suite verifies structural
 
 {/* Section: Quick Answers */}
 <h2 id="quick-answers" className="group flex scroll-mt-24 items-center gap-2 font-serif font-semibold tracking-tight mt-14 mb-4 border-b border-[#EDE6DA] dark:border-[#332F28] pb-3 text-2xl sm:text-[1.7rem] text-[#1D1B18] dark:text-[#FAF8F4]">
-  Quick Answers
+  6. Real-World Dev Gotchas &amp; Solutions
   <a href="#quick-answers" aria-label="Link to section" className="text-[#B89B6A] dark:text-[#D9C6A5] opacity-0 group-hover:opacity-100 transition-opacity">#</a>
 </h2>
 
@@ -427,7 +430,7 @@ A few questions I had to answer for myself along the way, collected in one place
 
 {/* Section: What This Actually Buys You */}
 <h2 id="what-this-actually-buys-you" className="group flex scroll-mt-24 items-center gap-2 font-serif font-semibold tracking-tight mt-14 mb-4 border-b border-[#EDE6DA] dark:border-[#332F28] pb-3 text-2xl sm:text-[1.7rem] text-[#1D1B18] dark:text-[#FAF8F4]">
-  What This Actually Buys You
+  7. Strategic Value: Why Wire Mocking Changes CI/CD
   <a href="#what-this-actually-buys-you" aria-label="Link to section" className="text-[#B89B6A] dark:text-[#D9C6A5] opacity-0 group-hover:opacity-100 transition-opacity">#</a>
 </h2>
 

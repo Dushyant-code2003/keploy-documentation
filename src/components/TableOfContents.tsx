@@ -9,17 +9,17 @@ interface TocItem {
 }
 
 const TOC_ITEMS: TocItem[] = [
-  { id: "why-windows-users-need-a-detour", label: "Why Windows Users Need a Detour" },
-  { id: "setting-up-wsl2--ubuntu", label: "Setting up WSL2 + Ubuntu" },
-  { id: "installing-go", label: "Installing Go" },
-  { id: "installing-keploy", label: "Installing Keploy" },
-  { id: "docker-desktop--wsl-integration", label: "Docker Desktop + WSL Integration" },
-  { id: "running-the-echo--postgresql-sample", label: "Running the Echo + PostgreSQL Sample" },
-  { id: "recording-test-cases", label: "Recording Test Cases" },
-  { id: "replaying-without-postgresql", label: "Replaying Without PostgreSQL" },
-  { id: "the-bug-that-taught-me-the-most", label: "The Bug That Taught Me the Most" },
-  { id: "quick-answers", label: "Quick Answers" },
-  { id: "what-this-actually-buys-you", label: "What This Actually Buys You" },
+  { id: "why-windows-users-need-a-detour", label: "1. Windows eBPF Kernel Bridge" },
+  { id: "setting-up-wsl2--ubuntu", label: "1.1 WSL2 Ubuntu Setup" },
+  { id: "installing-go", label: "1.2 Clean Go Toolchain" },
+  { id: "installing-keploy", label: "1.3 Keploy CLI & Headless Auth" },
+  { id: "docker-desktop--wsl-integration", label: "1.4 Docker & WSL Networking" },
+  { id: "running-the-echo--postgresql-sample", label: "2. Initializing Echo & PostgreSQL" },
+  { id: "recording-test-cases", label: "3. Recording Wire Traffic" },
+  { id: "replaying-without-postgresql", label: "4. Zero-DB Test Replay" },
+  { id: "the-bug-that-taught-me-the-most", label: "5. Debugging & Schema Regressions" },
+  { id: "quick-answers", label: "6. Real-World Dev Gotchas" },
+  { id: "what-this-actually-buys-you", label: "7. Strategic CI/CD Payoff" },
 ];
 
 export function TableOfContents() {

@@ -1,7 +1,5 @@
 {/* Benchmark opening */}
-<p className="my-4 leading-[1.75] text-slate-800 dark:text-slate-200">
-  I run Windows. Most Go tutorials assume you don’t. This guide covers the full WSL2 setup so you can use Keploy without skipping the hard parts.
-</p>
+I run Windows. Most Go tutorials assume you don’t. This guide covers the full WSL2 setup so you can use Keploy without skipping the hard parts.
 
 {/* Key takeaways card */}
 <div className="my-6 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0d111c] p-6 shadow-xs">
@@ -35,9 +33,7 @@
   <a href="#why-windows-users-need-a-detour" aria-label="Link to section" className="text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">#</a>
 </h2>
 
-<p className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
-  Keploy doesn&apos;t run natively on Windows the way it does on Linux, eBPF is a Linux kernel feature. Your options:
-</p>
+Keploy doesn&apos;t run natively on Windows the way it does on Linux, eBPF is a Linux kernel feature. Your options:
 
 <div className="my-6 overflow-x-auto rounded-lg border border-slate-200 dark:border-slate-800">
   <table className="w-full text-sm text-left">
@@ -76,9 +72,7 @@
   </table>
 </div>
 
-<p className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
-  I went with <strong>WSL2</strong>, and the four setup steps below get you from a bare Windows machine to a Keploy-ready Linux environment.
-</p>
+I went with <strong>WSL2</strong>, and the four setup steps below get you from a bare Windows machine to a Keploy-ready Linux environment.
 
 {/* Step 1 */}
 <div className="my-8">
@@ -98,17 +92,17 @@
         code="wsl --install -d Ubuntu-22.04"
       />
 
-      <p className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
+      <div className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
         Run this in an <strong>elevated PowerShell</strong> window (right-click → Run as Administrator). It downloads Ubuntu, and on first launch asks you to create a Linux username and password, separate from your Windows login.
-      </p>
+      </div>
 
       <Callout type="warning" title="Already have WSL from Docker Desktop?">
         Docker Desktop installs its own internal <code>docker-desktop</code> distro, so running <code>wsl -l -v</code> might show that instead of a real Ubuntu shell. Check the prompt: a real Ubuntu shell looks like <code>username@machine:~$</code>. If you just see a bare <code>#</code> prompt with no username, you&apos;re in a fallback shell with no package manager, you need to explicitly install Ubuntu, not just open <code>wsl.exe</code>.
       </Callout>
 
-      <p className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
+      <div className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
         Once inside Ubuntu, don&apos;t work out of your Windows filesystem (<code>/mnt/c/...</code>), move to your Linux home directory first:
-      </p>
+      </div>
 
       <CodeBlock
         title="Ubuntu (WSL2)"
@@ -116,9 +110,9 @@
         code="cd ~"
       />
 
-      <p className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
+      <div className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
         This avoids permission weirdness and is noticeably faster for anything involving <code>go build</code> or <code>git</code>.
-      </p>
+      </div>
     </div>
   </div>
 
@@ -133,9 +127,9 @@
         <a href="#installing-go" aria-label="Link to section" className="text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">#</a>
       </h3>
 
-      <p className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
+      <div className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
         Ubuntu&apos;s default <code>apt</code> package for Go is often years out of date (I got 1.18 when the current stable was well past 1.23). Skip <code>apt</code> and install directly from Go&apos;s official binary:
-      </p>
+      </div>
 
       <CodeBlock
         title="Ubuntu (WSL2)"
@@ -168,9 +162,9 @@ go version`}
 keploy --version`}
       />
 
-      <p className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
+      <div className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
         Then authenticate:
-      </p>
+      </div>
 
       <CodeBlock
         title="Ubuntu (WSL2)"
@@ -178,9 +172,9 @@ keploy --version`}
         code="keploy login"
       />
 
-      <p className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
+      <div className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
         This opens a browser tab to sign in. You have about a minute before the auth code expires, if you&apos;re slow to switch tabs, it&apos;ll time out and you&apos;ll just need to re-run the command.
-      </p>
+      </div>
 
       <Callout type="info" title="Why I choose --api-key over direct browser authentication">
         While <code>keploy login</code> works when a desktop browser is directly attached, I chose to authenticate using <code>--api-key &quot;kep_YOUR_KEY&quot;</code> directly in the CLI commands for three major reasons:
@@ -204,9 +198,9 @@ keploy --version`}
         <a href="#docker-desktop--wsl-integration" aria-label="Link to section" className="text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">#</a>
       </h3>
 
-      <p className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
+      <div className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
         The Echo + PostgreSQL sample runs PostgreSQL in a container while the Go app runs natively in WSL. That means Docker Desktop needs to talk to your Ubuntu distro specifically:
-      </p>
+      </div>
 
       <Callout type="warning" title="&quot;The command docker could not be found&quot;">
         Docker Desktop&apos;s WSL integration is off by default for any distro other than its own internal one. If <code>docker compose up</code> gives you <em>&quot;The command &apos;docker&apos; could not be found in this WSL 2 distro&quot;</em>, go to <strong>Docker Desktop → Settings → Resources → WSL Integration</strong> and toggle on your Ubuntu distro, then Apply &amp; Restart.
@@ -221,9 +215,7 @@ keploy --version`}
   <a href="#running-the-echo--postgresql-sample" aria-label="Link to section" className="text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">#</a>
 </h2>
 
-<p className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
-  This is a URL shortener API built with the Echo web framework backed by PostgreSQL — shorten URLs, follow 302 redirects, and query statistics.
-</p>
+This is a URL shortener API built with the Echo web framework backed by PostgreSQL — shorten URLs, follow 302 redirects, and query statistics.
 
 <CodeBlock
   title="Clone and fetch dependencies"
@@ -232,9 +224,7 @@ keploy --version`}
 go mod download`}
 />
 
-<p className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
-  The sample comes with pre-recorded examples in a <code>keploy/</code> directory. Move them aside to ensure you are recording your own test cases cleanly:
-</p>
+The sample comes with pre-recorded examples in a <code>keploy/</code> directory. Move them aside to ensure you are recording your own test cases cleanly:
 
 <CodeBlock
   title="Move sample keploy folder aside"
@@ -242,9 +232,7 @@ go mod download`}
   code="mv keploy keploy-sample-original"
 />
 
-<p className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
-  Start PostgreSQL in the background:
-</p>
+Start PostgreSQL in the background:
 
 <CodeBlock
   title="Start PostgreSQL container"
@@ -252,9 +240,7 @@ go mod download`}
   code="docker compose up -d postgres"
 />
 
-<p className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
-  Point the app at localhost (because the Go binary runs natively on WSL2 while Postgres runs in Docker):
-</p>
+Point the app at localhost (because the Go binary runs natively on WSL2 while Postgres runs in Docker):
 
 <CodeBlock
   title="Update main.go database host"
@@ -262,9 +248,7 @@ go mod download`}
   code="sed -i 's/host=postgres/host=localhost/' main.go"
 />
 
-<p className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
-  Build the app:
-</p>
+Build the app:
 
 <CodeBlock
   title="Build pure Go binary"
@@ -278,9 +262,7 @@ go mod download`}
   <a href="#recording-test-cases" aria-label="Link to section" className="text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">#</a>
 </h3>
 
-<p className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
-  This is the actual Keploy step. Everything before this was just getting a Linux environment ready.
-</p>
+This is the actual Keploy step. Everything before this was just getting a Linux environment ready.
 
 <CodeBlock
   title="Start recording"
@@ -289,22 +271,18 @@ go mod download`}
 />
 
 <Callout type="info" title="Why sudo and why --api-key?">
-  <p>Two critical environment requirements are handled in this single command:</p>
+  <div>Two critical environment requirements are handled in this single command:</div>
   <ul className="mt-2 space-y-1.5 list-disc pl-5 text-sm leading-relaxed">
     <li><strong>eBPF requires root:</strong> Intercepting kernel TCP sockets requires elevated privileges (<code>sudo</code>). Passing <code>-E PATH=&quot;$PATH&quot;</code> preserves your Go and Keploy binary search paths so root can locate them without resetting your shell environment.</li>
     <li><strong>Root session authentication:</strong> Because <code>sudo</code> isolates home directory configs, the root process cannot read tokens saved under <code>/home/username/.keploy/</code>. Passing <code>--api-key &quot;kep_YOUR_KEY&quot;</code> directly authenticates the root supervisor process immediately, completely bypassing browser popups and timeout issues.</li>
   </ul>
 </Callout>
 
-<p className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
-  With that running, open a <strong>second terminal</strong> and make real API calls. First, shorten a URL:
-</p>
+With that running, open a <strong>second terminal</strong> and make real API calls. First, shorten a URL:
 
 <QuickstartSplitViewer />
 
-<p className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
-  Take the ID from the end of the url field in the response, and use it to test the redirect:
-</p>
+Take the ID from the end of the url field in the response, and use it to test the redirect:
 
 <CodeBlock
   title="Test URL redirect"
@@ -314,9 +292,7 @@ go mod download`}
 # Location: https://github.com`}
 />
 
-<p className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
-  And test an error case with a non-existent URL:
-</p>
+And test an error case with a non-existent URL:
 
 <CodeBlock
   title="Test error case"
@@ -329,9 +305,7 @@ go mod download`}
   The ID is generated in PostgreSQL for each insert. Always use the ID returned from <em>your own</em> first response. If you pass an invalid route, you&apos;ll get a 404, and Keploy will faithfully record <em>that</em> as your test case.
 </Callout>
 
-<p className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
-  Stop the recording with <code>Ctrl+C</code>. Keploy writes everything it saw into a <code>keploy/</code> folder:
-</p>
+Stop the recording with <code>Ctrl+C</code>. Keploy writes everything it saw into a <code>keploy/</code> folder:
 
 <CodeBlock
   title="Inspect recorded test set"
@@ -340,27 +314,25 @@ go mod download`}
 ls -R keploy/`}
 />
 
-<p className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
-  You&apos;ll find two things in there:
-</p>
+You&apos;ll find two things in there:
 
 <div className="my-6 grid gap-4 sm:grid-cols-2">
   <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0d111c] p-5 shadow-xs">
     <h4 className="font-heading font-medium text-base text-slate-900 dark:text-slate-100 mb-2 flex items-center gap-2">
       <span className="text-indigo-500 font-bold">📄</span> Test files
     </h4>
-    <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+    <div className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
       Your actual request/response pairs, each curl call you made, captured as a replayable test case in <code>tests/post-url-1.yaml</code>.
-    </p>
+    </div>
   </div>
 
   <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0d111c] p-5 shadow-xs">
     <h4 className="font-heading font-medium text-base text-slate-900 dark:text-slate-100 mb-2 flex items-center gap-2">
       <span className="text-emerald-500 font-bold">🗄️</span> Mocks file
     </h4>
-    <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+    <div className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
       The raw PostgreSQL wire protocol traffic that happened behind the scenes — handshakes, SQL queries, parameter binds, DataRows — captured verbatim in <code>mocks.yaml</code>.
-    </p>
+    </div>
   </div>
 </div>
 
@@ -370,9 +342,7 @@ ls -R keploy/`}
   <a href="#replaying-without-postgresql" aria-label="Link to section" className="text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">#</a>
 </h3>
 
-<p className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
-  This is the payoff. Stop your PostgreSQL container, or just trust that Keploy doesn&apos;t need it:
-</p>
+This is the payoff. Stop your PostgreSQL container, or just trust that Keploy doesn&apos;t need it:
 
 <CodeBlock
   title="Run the recorded tests with PostgreSQL stopped"
@@ -382,9 +352,7 @@ docker ps  # verify postgres is stopped
 keploy test -c "./echo-psql-url-shortener" --delay 10 --api-key "kep_YOUR_KEY"`}
 />
 
-<p className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
-  Keploy replays your exact curl calls against a fresh instance of the app, but instead of hitting real PostgreSQL, it serves back the <em>exact</em> PostgreSQL wire responses it recorded earlier. No live database dependency, no test data drifting between runs, no &quot;works on my machine.&quot;
-</p>
+Keploy replays your exact curl calls against a fresh instance of the app, but instead of hitting real PostgreSQL, it serves back the <em>exact</em> PostgreSQL wire responses it recorded earlier. No live database dependency, no test data drifting between runs, no &quot;works on my machine.&quot;
 
 <Callout type="info" title="A genuinely nice CLI touch">
   After a test run, Keploy prints a structured summary, what passed, what failed, and a suggested next command, rather than leaving you to parse raw logs. If something fails, it explicitly tells you not to assume it&apos;s flaky noise; it nudges you to actually diagnose the diff first.
@@ -396,21 +364,15 @@ keploy test -c "./echo-psql-url-shortener" --delay 10 --api-key "kep_YOUR_KEY"`}
   <a href="#the-bug-that-taught-me-the-most" aria-label="Link to section" className="text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">#</a>
 </h3>
 
-<p className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
-  My first run attempt failed with <code>connection refused at postgres:5432</code>. Here&apos;s the debugging trail, because I think it&apos;s more useful than a clean success story.
-</p>
+My first run attempt failed with <code>connection refused at postgres:5432</code>. Here&apos;s the debugging trail, because I think it&apos;s more useful than a clean success story.
 
-<p className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
-  The cause: The sample&apos;s <code>main.go</code> was configured with <code>host=postgres</code>, which works when both app and database run inside Docker containers connected to the same Docker bridge network. But running the app binary <em>natively on WSL2</em> meant the Linux resolver had no idea what <code>postgres</code> was — only Docker containers get that internal DNS.
-</p>
+The cause: The sample&apos;s <code>main.go</code> was configured with <code>host=postgres</code>, which works when both app and database run inside Docker containers connected to the same Docker bridge network. But running the app binary <em>natively on WSL2</em> meant the Linux resolver had no idea what <code>postgres</code> was — only Docker containers get that internal DNS.
 
 <Callout type="warning" title="Connection refused or missing mocks?">
   If you&apos;re on WSL2 and your app cannot reach Docker or your mocks come up empty, make sure the app connects to <code>host=localhost</code>. Running the binary natively while Docker exposes port 5432 places the traffic directly onto the Linux loopback interface where Keploy&apos;s eBPF hook can intercept TCP packets cleanly.
 </Callout>
 
-<p className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
-  Switching to <code>host=localhost</code> fixed the connection immediately. Next, to test Keploy&apos;s regression detection, I mutated <code>handler.go</code>: changing the JSON struct tag from <code>json:&quot;url&quot;</code> to <code>json:&quot;short_url&quot;</code>:
-</p>
+Switching to <code>host=localhost</code> fixed the connection immediately. Next, to test Keploy&apos;s regression detection, I mutated <code>handler.go</code>: changing the JSON struct tag from <code>json:&quot;url&quot;</code> to <code>json:&quot;short_url&quot;</code>:
 
 <CodeBlock
   title="handler.go (Mutated for regression testing)"
@@ -422,9 +384,7 @@ keploy test -c "./echo-psql-url-shortener" --delay 10 --api-key "kep_YOUR_KEY"`}
 }`}
 />
 
-<p className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
-  After rebuilding with <code>CGO_ENABLED=0 go build -o echo-psql-url-shortener .</code>, running <code>keploy test</code> immediately flagged <code>SCHEMA_BROKEN</code>:
-</p>
+After rebuilding with <code>CGO_ENABLED=0 go build -o echo-psql-url-shortener .</code>, running <code>keploy test</code> immediately flagged <code>SCHEMA_BROKEN</code>:
 
 <CodeBlock
   title="Keploy regression report output"
@@ -437,9 +397,7 @@ keploy test -c "./echo-psql-url-shortener" --delay 10 --api-key "kep_YOUR_KEY"`}
   Category: SCHEMA_BROKEN`}
 />
 
-<p className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
-  That proved Keploy catches contract regressions without needing hand-written test assertions. Finally, handling dynamic fields: timestamps in <code>body.ts</code> and HTTP <code>header.Date</code> legitimately change every run. Keploy&apos;s <code>assertions.noise</code> list is built exactly for this:
-</p>
+That proved Keploy catches contract regressions without needing hand-written test assertions. Finally, handling dynamic fields: timestamps in <code>body.ts</code> and HTTP <code>header.Date</code> legitimately change every run. Keploy&apos;s <code>assertions.noise</code> list is built exactly for this:
 
 <CodeBlock
   title="keploy/test-set-0/tests/post-url-1.yaml"
@@ -450,9 +408,7 @@ keploy test -c "./echo-psql-url-shortener" --delay 10 --api-key "kep_YOUR_KEY"`}
     - header.Date`}
 />
 
-<p className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
-  With dynamic fields placed in the noise list, the test suite verifies structural schema correctness and passes completely.
-</p>
+With dynamic fields placed in the noise list, the test suite verifies structural schema correctness and passes completely.
 
 {/* Section: Quick Answers */}
 <h2 id="quick-answers" className="group flex scroll-mt-24 items-center gap-2 font-semibold tracking-tight mt-14 mb-4 border-b border-slate-200 dark:border-slate-800 pb-3 text-2xl sm:text-[1.7rem] text-slate-900 dark:text-slate-100">
@@ -460,9 +416,7 @@ keploy test -c "./echo-psql-url-shortener" --delay 10 --api-key "kep_YOUR_KEY"`}
   <a href="#quick-answers" aria-label="Link to section" className="text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">#</a>
 </h2>
 
-<p className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
-  A few questions I had to answer for myself along the way, collected in one place:
-</p>
+A few questions I had to answer for myself along the way, collected in one place:
 
 <GotchaAccordion />
 
@@ -472,9 +426,7 @@ keploy test -c "./echo-psql-url-shortener" --delay 10 --api-key "kep_YOUR_KEY"`}
   <a href="#what-this-actually-buys-you" aria-label="Link to section" className="text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">#</a>
 </h2>
 
-<p className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
-  The interesting part isn&apos;t &quot;look, tests pass.&quot; It&apos;s this:
-</p>
+The interesting part isn&apos;t &quot;look, tests pass.&quot; It&apos;s this:
 
 <div className="my-6 grid gap-4 sm:grid-cols-3">
   <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0d111c] p-6 shadow-xs">
@@ -484,9 +436,9 @@ keploy test -c "./echo-psql-url-shortener" --delay 10 --api-key "kep_YOUR_KEY"`}
     <h3 className="font-heading font-medium text-base text-slate-900 dark:text-slate-100 mb-2">
       CI without dependencies
     </h3>
-    <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+    <div className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
       Your integration tests no longer need a live PostgreSQL instance, database seeds, or container spin-up time to run in CI.
-    </p>
+    </div>
   </div>
 
   <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0d111c] p-6 shadow-xs">
@@ -496,9 +448,9 @@ keploy test -c "./echo-psql-url-shortener" --delay 10 --api-key "kep_YOUR_KEY"`}
     <h3 className="font-heading font-medium text-base text-slate-900 dark:text-slate-100 mb-2">
       Mocks that can&apos;t drift
     </h3>
-    <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+    <div className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
       The mocks are generated from <em>real</em> PostgreSQL wire traffic, not hand-written stubs that quietly fall out of sync with what your API actually queries.
-    </p>
+    </div>
   </div>
 
   <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0d111c] p-6 shadow-xs">
@@ -508,19 +460,15 @@ keploy test -c "./echo-psql-url-shortener" --delay 10 --api-key "kep_YOUR_KEY"`}
     <h3 className="font-heading font-medium text-base text-slate-900 dark:text-slate-100 mb-2">
       Zero extra code
     </h3>
-    <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+    <div className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
       You&apos;re not instrumenting handlers, seeding database tables, or writing mock fixtures. You&apos;re just calling your API normally while Keploy watches.
-    </p>
+    </div>
   </div>
 </div>
 
-<p className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
-  If you&apos;re evaluating Keploy for a Go service with any kind of database dependency, this Echo + PostgreSQL quickstart is the fastest way to feel that difference yourself, WSL setup aside.
-</p>
+If you&apos;re evaluating Keploy for a Go service with any kind of database dependency, this Echo + PostgreSQL quickstart is the fastest way to feel that difference yourself, WSL setup aside.
 
-<p className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
-  One last thing worth saying plainly: the debugging above wasn&apos;t a detour from learning Keploy, it <em>was</em> learning Keploy. Understanding why network routing and loopback socket interception behave the way they do taught me more about how eBPF works than a clean first-try run ever would have.
-</p>
+One last thing worth saying plainly: the debugging above wasn&apos;t a detour from learning Keploy, it <em>was</em> learning Keploy. Understanding why network routing and loopback socket interception behave the way they do taught me more about how eBPF works than a clean first-try run ever would have.
 
 {/* Feedback bar */}
 <FeedbackWidget />

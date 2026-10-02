@@ -13,6 +13,8 @@ import { LatencyBanner } from "@/components/LatencyBanner";
 import { NextStepsGrid } from "@/components/NextStepsGrid";
 import { FeedbackWidget } from "@/components/FeedbackWidget";
 import { EvaluationChecklist } from "@/components/EvaluationChecklist";
+import { ThreeDCard } from "@/components/ThreeDCard";
+import { ThreeDArchitectureVisualizer } from "@/components/ThreeDArchitectureVisualizer";
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
@@ -31,6 +33,8 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     NextStepsGrid,
     FeedbackWidget,
     EvaluationChecklist,
+    ThreeDCard,
+    ThreeDArchitectureVisualizer,
 
     h1: ({ children, ...props }) => (
       <h1

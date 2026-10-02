@@ -1,31 +1,36 @@
 {/* Benchmark opening */}
 I run Windows. Most Go tutorials assume you don’t. This guide covers the full WSL2 setup so you can use Keploy without skipping the hard parts.
 
-{/* Key takeaways card */}
-<div className="my-6 rounded-xl border border-[#EDE6DA] dark:border-[#332F28] bg-white dark:bg-[#1C1A17] p-6 shadow-xs">
-  <h3 className="font-serif text-lg font-semibold text-[#1D1B18] dark:text-[#FAF8F4] mb-3.5">
-    By the end of this, you&apos;ll have:
-  </h3>
-  <ul className="space-y-2.5 text-sm text-[#5C564E] dark:text-[#C5BEB5] leading-relaxed">
-    <li className="flex gap-2.5 items-start">
-      <span className="text-[#5E7E5A] dark:text-[#88AC84] font-bold shrink-0 mt-0.5">✓</span>
-      <span>A Go + Echo + PostgreSQL URL shortener API running locally</span>
-    </li>
-    <li className="flex gap-2.5 items-start">
-      <span className="text-[#5E7E5A] dark:text-[#88AC84] font-bold shrink-0 mt-0.5">✓</span>
-      <span>Keploy recording your real API calls as test cases and SQL mocks</span>
-    </li>
-    <li className="flex gap-2.5 items-start">
-      <span className="text-[#5E7E5A] dark:text-[#88AC84] font-bold shrink-0 mt-0.5">✓</span>
-      <span>Those tests replaying without PostgreSQL running, using auto-generated mocks</span>
-    </li>
-  </ul>
-</div>
+{/* Key takeaways card with 3D scroll-zoom and parallax */}
+<ThreeDCard className="my-6 rounded-xl" enableScrollZoom={true} enableTilt={true} depth={6}>
+  <div className="rounded-xl border border-[#EDE6DA] dark:border-[#332F28] bg-white dark:bg-[#1C1A17] p-6 shadow-xs">
+    <h3 className="font-serif text-lg font-semibold text-[#1D1B18] dark:text-[#FAF8F4] mb-3.5">
+      By the end of this, you&apos;ll have:
+    </h3>
+    <ul className="space-y-2.5 text-sm text-[#5C564E] dark:text-[#C5BEB5] leading-relaxed">
+      <li className="flex gap-2.5 items-start">
+        <span className="text-[#5E7E5A] dark:text-[#88AC84] font-bold shrink-0 mt-0.5">✓</span>
+        <span>A Go + Echo + PostgreSQL URL shortener API running locally</span>
+      </li>
+      <li className="flex gap-2.5 items-start">
+        <span className="text-[#5E7E5A] dark:text-[#88AC84] font-bold shrink-0 mt-0.5">✓</span>
+        <span>Keploy recording your real API calls as test cases and SQL mocks</span>
+      </li>
+      <li className="flex gap-2.5 items-start">
+        <span className="text-[#5E7E5A] dark:text-[#88AC84] font-bold shrink-0 mt-0.5">✓</span>
+        <span>Those tests replaying without PostgreSQL running, using auto-generated mocks</span>
+      </li>
+    </ul>
+  </div>
+</ThreeDCard>
 
 {/* eBPF explanation callout */}
 <Callout type="info" title="How Keploy pulls this off">
   Keploy uses eBPF to intercept network calls at the kernel level. That&apos;s the whole trick, it doesn&apos;t sit <em>inside</em> your code as a library, it sits <em>around</em> your app as a process, watching everything that goes in and out over the network.
 </Callout>
+
+{/* Interactive 3D Kernel Pipeline Visualizer */}
+<ThreeDArchitectureVisualizer />
 
 {/* Section: Why Windows Users Need a Detour */}
 <h2 id="why-windows-users-need-a-detour" className="group flex scroll-mt-24 items-center gap-2 font-serif font-semibold tracking-tight mt-14 mb-4 border-b border-[#EDE6DA] dark:border-[#332F28] pb-3 text-2xl sm:text-[1.7rem] text-[#1D1B18] dark:text-[#FAF8F4]">
@@ -429,41 +434,53 @@ A few questions I had to answer for myself along the way, collected in one place
 The interesting part isn&apos;t &quot;look, tests pass.&quot; It&apos;s this:
 
 <div className="my-6 grid gap-4 sm:grid-cols-3">
-  <div className="rounded-xl border border-[#EDE6DA] dark:border-[#332F28] bg-white dark:bg-[#1C1A17] p-6 shadow-xs">
-    <div className="w-8 h-8 rounded-lg bg-[#F4F0E8] dark:bg-[#201E1A] text-[#B89B6A] dark:text-[#D9C6A5] flex items-center justify-center font-bold text-base mb-3 border border-[#EDE6DA] dark:border-[#332F28]">
-      ⚡
+  <ThreeDCard enableScrollZoom={true} enableTilt={true} depth={7} className="rounded-xl">
+    <div className="h-full rounded-xl border border-[#EDE6DA] dark:border-[#332F28] bg-white dark:bg-[#1C1A17] p-6 shadow-xs flex flex-col justify-between">
+      <div>
+        <div className="w-8 h-8 rounded-lg bg-[#F4F0E8] dark:bg-[#201E1A] text-[#B89B6A] dark:text-[#D9C6A5] flex items-center justify-center font-bold text-base mb-3 border border-[#EDE6DA] dark:border-[#332F28]">
+          ⚡
+        </div>
+        <h3 className="font-serif font-semibold text-base text-[#1D1B18] dark:text-[#FAF8F4] mb-2">
+          CI without dependencies
+        </h3>
+        <div className="text-sm text-[#5C564E] dark:text-[#C5BEB5] leading-relaxed">
+          Your integration tests no longer need a live PostgreSQL instance, database seeds, or container spin-up time to run in CI.
+        </div>
+      </div>
     </div>
-    <h3 className="font-serif font-semibold text-base text-[#1D1B18] dark:text-[#FAF8F4] mb-2">
-      CI without dependencies
-    </h3>
-    <div className="text-sm text-[#5C564E] dark:text-[#C5BEB5] leading-relaxed">
-      Your integration tests no longer need a live PostgreSQL instance, database seeds, or container spin-up time to run in CI.
-    </div>
-  </div>
+  </ThreeDCard>
 
-  <div className="rounded-xl border border-[#EDE6DA] dark:border-[#332F28] bg-white dark:bg-[#1C1A17] p-6 shadow-xs">
-    <div className="w-8 h-8 rounded-lg bg-[#F4F6F2] dark:bg-[#1C261D] text-[#5E7E5A] dark:text-[#88AC84] flex items-center justify-center font-bold text-base mb-3 border border-[#CCD8CA] dark:border-[#2D4030]">
-      🛡️
+  <ThreeDCard enableScrollZoom={true} enableTilt={true} depth={7} className="rounded-xl">
+    <div className="h-full rounded-xl border border-[#EDE6DA] dark:border-[#332F28] bg-white dark:bg-[#1C1A17] p-6 shadow-xs flex flex-col justify-between">
+      <div>
+        <div className="w-8 h-8 rounded-lg bg-[#F4F6F2] dark:bg-[#1C261D] text-[#5E7E5A] dark:text-[#88AC84] flex items-center justify-center font-bold text-base mb-3 border border-[#CCD8CA] dark:border-[#2D4030]">
+          🛡️
+        </div>
+        <h3 className="font-serif font-semibold text-base text-[#1D1B18] dark:text-[#FAF8F4] mb-2">
+          Mocks that can&apos;t drift
+        </h3>
+        <div className="text-sm text-[#5C564E] dark:text-[#C5BEB5] leading-relaxed">
+          The mocks are generated from <em>real</em> PostgreSQL wire traffic, not hand-written stubs that quietly fall out of sync with what your API actually queries.
+        </div>
+      </div>
     </div>
-    <h3 className="font-serif font-semibold text-base text-[#1D1B18] dark:text-[#FAF8F4] mb-2">
-      Mocks that can&apos;t drift
-    </h3>
-    <div className="text-sm text-[#5C564E] dark:text-[#C5BEB5] leading-relaxed">
-      The mocks are generated from <em>real</em> PostgreSQL wire traffic, not hand-written stubs that quietly fall out of sync with what your API actually queries.
-    </div>
-  </div>
+  </ThreeDCard>
 
-  <div className="rounded-xl border border-[#EDE6DA] dark:border-[#332F28] bg-white dark:bg-[#1C1A17] p-6 shadow-xs">
-    <div className="w-8 h-8 rounded-lg bg-[#F4F0E8] dark:bg-[#201E1A] text-[#B89B6A] dark:text-[#D9C6A5] flex items-center justify-center font-bold text-base mb-3 border border-[#EDE6DA] dark:border-[#332F28]">
-      ✍️
+  <ThreeDCard enableScrollZoom={true} enableTilt={true} depth={7} className="rounded-xl">
+    <div className="h-full rounded-xl border border-[#EDE6DA] dark:border-[#332F28] bg-white dark:bg-[#1C1A17] p-6 shadow-xs flex flex-col justify-between">
+      <div>
+        <div className="w-8 h-8 rounded-lg bg-[#F4F0E8] dark:bg-[#201E1A] text-[#B89B6A] dark:text-[#D9C6A5] flex items-center justify-center font-bold text-base mb-3 border border-[#EDE6DA] dark:border-[#332F28]">
+          ✍️
+        </div>
+        <h3 className="font-serif font-semibold text-base text-[#1D1B18] dark:text-[#FAF8F4] mb-2">
+          Zero extra code
+        </h3>
+        <div className="text-sm text-[#5C564E] dark:text-[#C5BEB5] leading-relaxed">
+          You&apos;re not instrumenting handlers, seeding database tables, or writing mock fixtures. You&apos;re just calling your API normally while Keploy watches.
+        </div>
+      </div>
     </div>
-    <h3 className="font-serif font-semibold text-base text-[#1D1B18] dark:text-[#FAF8F4] mb-2">
-      Zero extra code
-    </h3>
-    <div className="text-sm text-[#5C564E] dark:text-[#C5BEB5] leading-relaxed">
-      You&apos;re not instrumenting handlers, seeding database tables, or writing mock fixtures. You&apos;re just calling your API normally while Keploy watches.
-    </div>
-  </div>
+  </ThreeDCard>
 </div>
 
 If you&apos;re evaluating Keploy for a Go service with any kind of database dependency, this Echo + PostgreSQL quickstart is the fastest way to feel that difference yourself, WSL setup aside.

@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { Check, Copy } from "lucide-react";
+import { ThreeDCard } from "./ThreeDCard";
 
 export function QuickstartSplitViewer() {
   const [copiedReq, setCopiedReq] = useState(false);
@@ -37,9 +38,16 @@ export function QuickstartSplitViewer() {
   };
 
   return (
-    <div className="my-6 grid grid-cols-1 lg:grid-cols-2 gap-4">
-      {/* Left Column: Request */}
-      <div className="rounded-xl border border-[#38332A] bg-[#161513] text-[#EDE7DF] overflow-hidden shadow-md flex flex-col">
+    <ThreeDCard
+      className="my-7 rounded-2xl"
+      enableScrollZoom={true}
+      enableTilt={true}
+      depth={7}
+      glare={true}
+    >
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {/* Left Column: Request */}
+        <div className="rounded-xl border border-[#38332A] bg-[#161513] text-[#EDE7DF] overflow-hidden shadow-md flex flex-col">
         {/* Header */}
         <div className="flex items-center justify-between px-3.5 py-2.5 bg-[#1E1C19] border-b border-[#2D2923] text-xs font-mono">
           <div className="flex items-center gap-2">
@@ -103,5 +111,6 @@ export function QuickstartSplitViewer() {
         </div>
       </div>
     </div>
+    </ThreeDCard>
   );
 }

@@ -32,6 +32,14 @@ export const metadata: Metadata = {
     description: "Learn how to record e2e test cases and mock PostgreSQL dependencies automatically with Keploy.",
     type: "article",
   },
+  icons: {
+    icon: [
+      { url: "/keploy-logo.png", type: "image/png" },
+    ],
+    apple: [
+      { url: "/keploy-logo.png" },
+    ],
+  },
 };
 
 export default function RootLayout({

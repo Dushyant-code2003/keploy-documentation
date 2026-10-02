@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ThemeToggle } from "./ThemeToggle";
 
 export function Navbar() {
@@ -10,9 +11,15 @@ export function Navbar() {
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
         {/* Brand */}
         <Link href="#top" className="flex items-center gap-2.5 group">
-          <span className="grid size-7 place-items-center rounded-lg bg-[#1D1B18] text-[#D9C6A5] dark:bg-[#B89B6A] dark:text-[#141311] font-bold text-sm shadow-xs group-hover:scale-105 transition-transform">
-            K
-          </span>
+          <div className="relative size-7 overflow-hidden rounded-lg border border-[#EDE6DA] dark:border-[#332F28] bg-white dark:bg-[#1D1B18] p-0.5 shadow-xs group-hover:scale-105 transition-transform flex items-center justify-center">
+            <Image
+              src="/keploy-logo.png"
+              alt="Keploy Logo"
+              width={24}
+              height={24}
+              className="rounded object-contain"
+            />
+          </div>
           <span className="text-[15px] font-semibold tracking-tight text-[#1D1B18] dark:text-[#FAF8F4]">
             Keploy <span className="text-[#8F897D] font-normal">Tutorial</span>
           </span>

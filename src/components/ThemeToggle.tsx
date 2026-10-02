@@ -16,7 +16,7 @@ export function ThemeToggle() {
 
   if (!mounted) {
     return (
-      <div className="w-9 h-9 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-100/50 dark:bg-slate-900/50" />
+      <div className="w-9 h-9 rounded-lg border border-[#EDE6DA] dark:border-[#332F28] bg-[#F4F0E8]/50 dark:bg-[#201E1A]/50" />
     );
   }
 
@@ -30,15 +30,15 @@ export function ThemeToggle() {
     <button
       onClick={cycleTheme}
       title={`Current: ${theme}. Click to change theme`}
-      className="inline-flex items-center justify-center w-9 h-9 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+      className="inline-flex items-center justify-center w-9 h-9 rounded-lg border border-[#EDE6DA] dark:border-[#332F28] bg-white dark:bg-[#1E1C18] hover:bg-[#F4F0E8] dark:hover:bg-[#26231E] text-[#6B655C] dark:text-[#C5BEB5] transition-colors shadow-xs focus:outline-none focus:ring-2 focus:ring-[#B89B6A]"
       aria-label="Toggle theme"
     >
       {theme === "dark" ? (
-        <Moon className="w-4 h-4 text-orange-400 transition-transform hover:rotate-12" />
+        <Moon className="w-4 h-4 text-[#D9C6A5] transition-transform hover:rotate-12" />
       ) : theme === "light" ? (
-        <Sun className="w-4 h-4 text-amber-500 transition-transform hover:rotate-45" />
+        <Sun className="w-4 h-4 text-[#A1824F] transition-transform hover:rotate-45" />
       ) : (
-        <Laptop className="w-4 h-4 text-blue-500" />
+        <Laptop className="w-4 h-4 text-[#8F897D]" />
       )}
     </button>
   );

@@ -24,45 +24,45 @@ export function Callout({
   const styles = {
     info: {
       container:
-        "border-blue-500/30 bg-blue-50/70 dark:bg-blue-950/20 text-blue-900 dark:text-blue-100",
-      icon: <Info className="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />,
+        "border-[#D9C6A5]/60 bg-[#F4F0E8]/75 dark:bg-[#1E1C18] text-[#1D1B18] dark:text-[#FAF8F4]",
+      icon: <Info className="w-5 h-5 text-[#A1824F] dark:text-[#D9C6A5] shrink-0 mt-0.5" />,
       defaultTitle: "Note",
-      badge: "bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300",
+      badge: "bg-[#EDE6DA] dark:bg-[#2A261F] text-[#8C6D3B] dark:text-[#D9C6A5] border border-[#DFD5C6] dark:border-[#3A352D]",
     },
     tip: {
       container:
-        "border-emerald-500/30 bg-emerald-50/70 dark:bg-emerald-950/20 text-emerald-900 dark:text-emerald-100",
-      icon: <Lightbulb className="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />,
+        "border-[#A1B39D]/50 bg-[#F4F6F2] dark:bg-[#181E19] text-[#1E2B1E] dark:text-[#E2EBE2]",
+      icon: <Lightbulb className="w-5 h-5 text-[#5E7E5A] dark:text-[#88AC84] shrink-0 mt-0.5" />,
       defaultTitle: "Pro Tip",
-      badge: "bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-300",
+      badge: "bg-[#E5ECE3] dark:bg-[#202E22] text-[#476644] dark:text-[#A7C8A4] border border-[#CCD8CA] dark:border-[#2D4030]",
     },
     warning: {
       container:
-        "border-amber-500/30 bg-amber-50/70 dark:bg-amber-950/20 text-amber-900 dark:text-amber-100",
-      icon: <AlertTriangle className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />,
+        "border-[#E5C07B]/50 bg-[#FAF5EC] dark:bg-[#201C15] text-[#3D2C10] dark:text-[#F3E7D3]",
+      icon: <AlertTriangle className="w-5 h-5 text-[#C4882F] dark:text-[#E5B564] shrink-0 mt-0.5" />,
       defaultTitle: "Gotcha / Warning",
-      badge: "bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-300",
+      badge: "bg-[#F5E8D0] dark:bg-[#2D2415] text-[#915B10] dark:text-[#E5B564] border border-[#E9D4B0] dark:border-[#42341D]",
     },
     danger: {
       container:
-        "border-red-500/30 bg-red-50/70 dark:bg-red-950/20 text-red-900 dark:text-red-100",
-      icon: <Flame className="w-5 h-5 text-red-600 dark:text-red-400 shrink-0 mt-0.5" />,
+        "border-[#E06C75]/40 bg-[#FAF1F1] dark:bg-[#201516] text-[#421517] dark:text-[#F7D8DA]",
+      icon: <Flame className="w-5 h-5 text-[#C24B55] dark:text-[#E57B84] shrink-0 mt-0.5" />,
       defaultTitle: "Critical",
-      badge: "bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-300",
+      badge: "bg-[#F8DADB] dark:bg-[#321719] text-[#93252E] dark:text-[#EFA4AA] border border-[#EBB6BA] dark:border-[#491E23]",
     },
     aha: {
       container:
-        "border-orange-500/40 bg-gradient-to-r from-orange-500/10 via-amber-500/10 to-transparent dark:bg-gradient-to-r dark:from-orange-950/30 dark:via-amber-950/20 text-orange-950 dark:text-orange-100 ring-1 ring-orange-500/20",
-      icon: <Sparkles className="w-5 h-5 text-orange-600 dark:text-orange-400 shrink-0 mt-0.5" />,
+        "border-[#B89B6A]/50 bg-gradient-to-r from-[#B89B6A]/15 via-[#D9C6A5]/10 to-transparent dark:from-[#B89B6A]/20 dark:via-[#201E1A] dark:to-[#141311] text-[#1D1B18] dark:text-[#FAF8F4] ring-1 ring-[#B89B6A]/30",
+      icon: <Sparkles className="w-5 h-5 text-[#A1824F] dark:text-[#D9C6A5] shrink-0 mt-0.5" />,
       defaultTitle: "The A-Ha Moment!",
-      badge: "bg-orange-500 text-white font-semibold",
+      badge: "bg-[#1D1B18] dark:bg-[#CBB084] text-[#D9C6A5] dark:text-[#141311] font-semibold",
     },
     success: {
       container:
-        "border-teal-500/30 bg-teal-50/70 dark:bg-teal-950/20 text-teal-900 dark:text-teal-100",
-      icon: <CheckCircle2 className="w-5 h-5 text-teal-600 dark:text-teal-400 shrink-0 mt-0.5" />,
+        "border-[#88AC84]/40 bg-[#F4F6F2] dark:bg-[#181E19] text-[#1E2B1E] dark:text-[#E2EBE2]",
+      icon: <CheckCircle2 className="w-5 h-5 text-[#5E7E5A] dark:text-[#88AC84] shrink-0 mt-0.5" />,
       defaultTitle: "Verified",
-      badge: "bg-teal-100 dark:bg-teal-900/50 text-teal-700 dark:text-teal-300",
+      badge: "bg-[#E5ECE3] dark:bg-[#202E22] text-[#476644] dark:text-[#A7C8A4] border border-[#CCD8CA] dark:border-[#2D4030]",
     },
   }[type];
 

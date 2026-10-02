@@ -80,12 +80,12 @@ export function GotchaAccordion() {
   return (
     <div className="my-8 space-y-3">
       <div className="flex items-center gap-2 mb-2">
-        <AlertTriangle className="w-5 h-5 text-amber-500" />
-        <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">
+        <AlertTriangle className="w-5 h-5 text-[#B89B6A]" />
+        <h3 className="font-serif text-xl font-semibold text-[#1D1B18] dark:text-[#FAF8F4]">
           Real-World Dev Gotchas &amp; Battle-Tested Fixes
         </h3>
       </div>
-      <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
+      <p className="text-sm text-[#6B655C] dark:text-[#C5BEB5] mb-4">
         Every developer encounters hiccups when pairing WSL2, Docker, and eBPF network hooks. Here are the exact 5 friction points hit during our Echo + Postgres run and how to solve them:
       </p>
 
@@ -94,56 +94,56 @@ export function GotchaAccordion() {
         return (
           <div
             key={item.id}
-            className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/70 overflow-hidden transition-all shadow-sm"
+            className="rounded-xl border border-[#EDE6DA] dark:border-[#332F28] bg-white dark:bg-[#1C1A17] overflow-hidden transition-all shadow-xs"
           >
             <button
               onClick={() => toggle(item.id)}
-              className="w-full flex items-center justify-between p-4 text-left hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
+              className="w-full flex items-center justify-between p-4 text-left hover:bg-[#F4F0E8]/70 dark:hover:bg-[#23201B] transition-colors"
             >
               <div className="flex items-center gap-3">
-                <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 dark:bg-amber-950/70 text-amber-800 dark:text-amber-300">
+                <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#F4F0E8] dark:bg-[#2A261F] text-[#8C6D3B] dark:text-[#D9C6A5] border border-[#EDE6DA] dark:border-[#383329]">
                   {item.badge}
                 </span>
-                <span className="font-semibold text-sm md:text-base text-slate-900 dark:text-slate-100">
+                <span className="font-medium text-sm md:text-base text-[#1D1B18] dark:text-[#FAF8F4]">
                   {item.title}
                 </span>
               </div>
               <ChevronDown
-                className={`w-4 h-4 text-slate-500 transition-transform duration-200 ${
-                  isOpen ? "rotate-180 text-orange-500" : ""
+                className={`w-4 h-4 text-[#8F897D] transition-transform duration-200 ${
+                  isOpen ? "rotate-180 text-[#B89B6A]" : ""
                 }`}
               />
             </button>
 
             {isOpen && (
-              <div className="px-4 pb-4 pt-1 border-t border-slate-100 dark:border-slate-800/80 text-sm space-y-3">
+              <div className="px-4 pb-4 pt-1 border-t border-[#EDE6DA] dark:border-[#332F28] text-sm space-y-3">
                 <div>
-                  <div className="text-xs font-bold uppercase tracking-wider text-rose-600 dark:text-rose-400 mb-1 flex items-center gap-1.5">
+                  <div className="text-xs font-bold uppercase tracking-wider text-[#C24B55] dark:text-[#E57B84] mb-1 flex items-center gap-1.5">
                     <AlertTriangle className="w-3.5 h-3.5" /> What Happened:
                   </div>
-                  <div className="text-slate-600 dark:text-slate-300 bg-rose-50/50 dark:bg-rose-950/20 p-2.5 rounded-lg border border-rose-200/40 dark:border-rose-900/30 font-mono text-xs">
+                  <div className="text-[#421517] dark:text-[#F7D8DA] bg-[#FAF1F1] dark:bg-[#201516] p-2.5 rounded-lg border border-[#EBB6BA] dark:border-[#491E23] font-mono text-xs">
                     {item.symptom}
                   </div>
                 </div>
 
                 <div>
-                  <div className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1 flex items-center gap-1.5">
+                  <div className="text-xs font-bold uppercase tracking-wider text-[#8F897D] mb-1 flex items-center gap-1.5">
                     <HelpCircle className="w-3.5 h-3.5" /> Root Cause:
                   </div>
-                  <p className="text-slate-600 dark:text-slate-300 text-xs md:text-sm">
+                  <p className="text-[#6B655C] dark:text-[#C5BEB5] text-xs md:text-sm">
                     {item.cause}
                   </p>
                 </div>
 
                 <div>
-                  <div className="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-1 flex items-center gap-1.5">
+                  <div className="text-xs font-bold uppercase tracking-wider text-[#5E7E5A] dark:text-[#88AC84] mb-1 flex items-center gap-1.5">
                     <CheckCircle className="w-3.5 h-3.5" /> Solution:
                   </div>
-                  <p className="text-slate-600 dark:text-slate-300 text-xs md:text-sm mb-2">
+                  <p className="text-[#6B655C] dark:text-[#C5BEB5] text-xs md:text-sm mb-2">
                     {item.solution}
                   </p>
                   {item.code && (
-                    <div className="bg-[#0d1117] text-slate-200 p-3 rounded-lg font-mono text-xs overflow-x-auto border border-slate-800">
+                    <div className="bg-[#161513] text-[#EDE7DF] p-3 rounded-lg font-mono text-xs overflow-x-auto border border-[#38332A]">
                       <pre className="m-0">{item.code}</pre>
                     </div>
                   )}

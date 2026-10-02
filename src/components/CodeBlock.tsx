@@ -64,27 +64,27 @@ export function CodeBlock({
   const shouldNumber = showLineNumbers || (!isTerminal && lines.length > 2);
 
   return (
-    <div className="my-5 rounded-xl overflow-hidden border border-slate-700/60 bg-[#0d111c] text-slate-100 shadow-xl group">
-      {/* Title / Header Bar matching screenshot with 3 dots */}
-      <div className="flex items-center justify-between px-4 py-2.5 bg-[#141926] border-b border-slate-800 text-xs font-mono text-slate-400">
+    <div className="my-5 rounded-xl overflow-hidden border border-[#38332A] bg-[#161513] text-[#EDE7DF] shadow-md group">
+      {/* Title / Header Bar with 3 dots */}
+      <div className="flex items-center justify-between px-4 py-2.5 bg-[#1E1C19] border-b border-[#2D2923] text-xs font-mono text-[#A89E90]">
         <div className="flex items-center gap-3">
-          {/* macOS 3 dots matching screenshot */}
+          {/* macOS 3 dots */}
           <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f56]" />
-            <span className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" />
-            <span className="w-2.5 h-2.5 rounded-full bg-[#27c93f]" />
+            <span className="w-2.5 h-2.5 rounded-full bg-[#E06C75]/80" />
+            <span className="w-2.5 h-2.5 rounded-full bg-[#E5C07B]/80" />
+            <span className="w-2.5 h-2.5 rounded-full bg-[#98C379]/80" />
           </div>
 
           <div className="flex items-center gap-2">
             {isTerminal ? (
-              <Terminal className="w-3.5 h-3.5 text-emerald-400" />
+              <Terminal className="w-3.5 h-3.5 text-[#B89B6A]" />
             ) : (
-              <FileCode className="w-3.5 h-3.5 text-indigo-400" />
+              <FileCode className="w-3.5 h-3.5 text-[#D9C6A5]" />
             )}
-            <span className="font-semibold text-slate-300">
+            <span className="font-medium text-[#FAF8F4]">
               {title || (isTerminal ? "Terminal / Shell" : finalLanguage)}
             </span>
-            <span className="px-1.5 py-0.5 rounded bg-slate-800 text-[10px] text-slate-400 uppercase tracking-wider">
+            <span className="px-1.5 py-0.5 rounded bg-[#292520] border border-[#3A352D] text-[10px] text-[#D9C6A5] uppercase tracking-wider">
               {finalLanguage}
             </span>
           </div>
@@ -92,17 +92,17 @@ export function CodeBlock({
 
         <button
           onClick={handleCopy}
-          className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-all text-xs font-sans focus:outline-none"
+          className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#27241F] hover:bg-[#332E27] text-[#C5BEB5] hover:text-[#FAF8F4] border border-[#38332A] transition-all text-xs font-sans focus:outline-none"
           title="Copy code to clipboard"
         >
           {copied ? (
             <>
-              <Check className="w-3.5 h-3.5 text-emerald-400" />
-              <span className="text-emerald-400 font-medium">Copied!</span>
+              <Check className="w-3.5 h-3.5 text-[#B89B6A]" />
+              <span className="text-[#B89B6A] font-medium">Copied!</span>
             </>
           ) : (
             <>
-              <Copy className="w-3.5 h-3.5 text-slate-400 group-hover:text-slate-200" />
+              <Copy className="w-3.5 h-3.5 text-[#8F897D] group-hover:text-[#FAF8F4]" />
               <span>Copy snippet</span>
             </>
           )}
@@ -114,18 +114,18 @@ export function CodeBlock({
         {shouldNumber ? (
           <div className="table w-full">
             {lines.map((line, idx) => (
-              <div key={idx} className="table-row hover:bg-slate-800/30">
-                <span className="table-cell select-none pr-4 text-slate-600 dark:text-slate-600 text-right w-8 text-xs font-mono">
+              <div key={idx} className="table-row hover:bg-[#201D1A]/50">
+                <span className="table-cell select-none pr-4 text-[#7A7165] text-right w-8 text-xs font-mono">
                   {String(idx + 1).padStart(2, "0")}
                 </span>
-                <span className="table-cell whitespace-pre text-slate-200">
+                <span className="table-cell whitespace-pre text-[#EDE7DF]">
                   {line || " "}
                 </span>
               </div>
             ))}
           </div>
         ) : (
-          <pre className="m-0 p-0 bg-transparent text-slate-200 selection:bg-indigo-500/30">
+          <pre className="m-0 p-0 bg-transparent text-[#EDE7DF] selection:bg-[#B89B6A]/30">
             {children || <code>{rawCode}</code>}
           </pre>
         )}

@@ -57,26 +57,26 @@ export function TableOfContents() {
       <div className="sticky top-24 space-y-6 text-xs select-none">
         {/* Progress Bar */}
         <div>
-          <div className="flex items-center justify-between text-slate-500 dark:text-slate-400 mb-1.5 font-medium">
+          <div className="flex items-center justify-between text-[#6B655C] dark:text-[#C5BEB5] mb-1.5 font-medium">
             <span className="flex items-center gap-1.5">
-              <BookOpen className="w-3.5 h-3.5 text-indigo-500" />
+              <BookOpen className="w-3.5 h-3.5 text-[#B89B6A] dark:text-[#D9C6A5]" />
               Progress
             </span>
-            <span className="font-mono text-indigo-600 dark:text-indigo-400 font-semibold">
+            <span className="font-mono text-[#A1824F] dark:text-[#D9C6A5] font-semibold">
               {Math.round(readingProgress)}%
             </span>
           </div>
-          <div className="w-full h-1 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+          <div className="w-full h-1 bg-[#EDE6DA] dark:bg-[#201E1A] rounded-full overflow-hidden">
             <div
-              className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full transition-all duration-150"
+              className="h-full bg-gradient-to-r from-[#B89B6A] to-[#D9C6A5] rounded-full transition-all duration-150"
               style={{ width: `${readingProgress}%` }}
             />
           </div>
         </div>
 
-        {/* Section Heading matching screenshot */}
+        {/* Section Heading */}
         <div>
-          <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-slate-200 mb-3">
+          <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#1D1B18] dark:text-[#FAF8F4] mb-3">
             <span>On this page</span>
           </div>
 
@@ -89,8 +89,8 @@ export function TableOfContents() {
                   href={`#${item.id}`}
                   className={`block py-1 px-2 rounded-md transition-colors ${
                     isActive
-                      ? "text-indigo-600 dark:text-indigo-400 font-semibold bg-indigo-50/70 dark:bg-indigo-950/30"
-                      : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
+                      ? "text-[#9F8353] dark:text-[#D9C6A5] font-semibold bg-[#F4F0E8] dark:bg-[#201E1A]"
+                      : "text-[#6B655C] dark:text-[#8F897D] hover:text-[#1D1B18] dark:hover:text-[#FAF8F4]"
                   }`}
                 >
                   {item.label}
@@ -100,15 +100,15 @@ export function TableOfContents() {
           </nav>
         </div>
 
-        {/* Action Links matching screenshot */}
-        <div className="pt-4 border-t border-slate-200 dark:border-slate-800/80 space-y-2.5 text-slate-500 dark:text-slate-400">
+        {/* Action Links */}
+        <div className="pt-4 border-t border-[#EDE6DA] dark:border-[#332F28] space-y-2.5 text-[#6B655C] dark:text-[#8F897D]">
           <a
             href="https://github.com/keploy/samples-go"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 hover:text-slate-900 dark:hover:text-slate-200 transition-colors"
+            className="flex items-center gap-2 hover:text-[#1D1B18] dark:hover:text-[#FAF8F4] transition-colors"
           >
-            <Edit3 className="w-3.5 h-3.5 text-slate-400" />
+            <Edit3 className="w-3.5 h-3.5 text-[#8F897D]" />
             <span>Edit on GitHub</span>
           </a>
 
@@ -116,9 +116,9 @@ export function TableOfContents() {
             href="https://community.keploy.io"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 hover:text-slate-900 dark:hover:text-slate-200 transition-colors"
+            className="flex items-center gap-2 hover:text-[#1D1B18] dark:hover:text-[#FAF8F4] transition-colors"
           >
-            <MessageSquare className="w-3.5 h-3.5 text-slate-400" />
+            <MessageSquare className="w-3.5 h-3.5 text-[#8F897D]" />
             <span>Ask the Community</span>
           </a>
         </div>

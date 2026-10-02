@@ -2,21 +2,21 @@
 I run Windows. Most Go tutorials assume you don’t. This guide covers the full WSL2 setup so you can use Keploy without skipping the hard parts.
 
 {/* Key takeaways card */}
-<div className="my-6 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0d111c] p-6 shadow-xs">
-  <h3 className="font-heading text-base font-semibold text-slate-900 dark:text-slate-100 mb-3.5">
+<div className="my-6 rounded-xl border border-[#EDE6DA] dark:border-[#332F28] bg-white dark:bg-[#1C1A17] p-6 shadow-xs">
+  <h3 className="font-serif text-lg font-semibold text-[#1D1B18] dark:text-[#FAF8F4] mb-3.5">
     By the end of this, you&apos;ll have:
   </h3>
-  <ul className="space-y-2.5 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+  <ul className="space-y-2.5 text-sm text-[#5C564E] dark:text-[#C5BEB5] leading-relaxed">
     <li className="flex gap-2.5 items-start">
-      <span className="text-emerald-500 font-bold shrink-0 mt-0.5">✓</span>
+      <span className="text-[#5E7E5A] dark:text-[#88AC84] font-bold shrink-0 mt-0.5">✓</span>
       <span>A Go + Echo + PostgreSQL URL shortener API running locally</span>
     </li>
     <li className="flex gap-2.5 items-start">
-      <span className="text-emerald-500 font-bold shrink-0 mt-0.5">✓</span>
+      <span className="text-[#5E7E5A] dark:text-[#88AC84] font-bold shrink-0 mt-0.5">✓</span>
       <span>Keploy recording your real API calls as test cases and SQL mocks</span>
     </li>
     <li className="flex gap-2.5 items-start">
-      <span className="text-emerald-500 font-bold shrink-0 mt-0.5">✓</span>
+      <span className="text-[#5E7E5A] dark:text-[#88AC84] font-bold shrink-0 mt-0.5">✓</span>
       <span>Those tests replaying without PostgreSQL running, using auto-generated mocks</span>
     </li>
   </ul>
@@ -28,24 +28,24 @@ I run Windows. Most Go tutorials assume you don’t. This guide covers the full 
 </Callout>
 
 {/* Section: Why Windows Users Need a Detour */}
-<h2 id="why-windows-users-need-a-detour" className="group flex scroll-mt-24 items-center gap-2 font-semibold tracking-tight mt-14 mb-4 border-b border-slate-200 dark:border-slate-800 pb-3 text-2xl sm:text-[1.7rem] text-slate-900 dark:text-slate-100">
+<h2 id="why-windows-users-need-a-detour" className="group flex scroll-mt-24 items-center gap-2 font-serif font-semibold tracking-tight mt-14 mb-4 border-b border-[#EDE6DA] dark:border-[#332F28] pb-3 text-2xl sm:text-[1.7rem] text-[#1D1B18] dark:text-[#FAF8F4]">
   Why Windows Users Need a Detour
-  <a href="#why-windows-users-need-a-detour" aria-label="Link to section" className="text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">#</a>
+  <a href="#why-windows-users-need-a-detour" aria-label="Link to section" className="text-[#B89B6A] dark:text-[#D9C6A5] opacity-0 group-hover:opacity-100 transition-opacity">#</a>
 </h2>
 
 Keploy doesn&apos;t run natively on Windows the way it does on Linux, eBPF is a Linux kernel feature. Your options:
 
-<div className="my-6 overflow-x-auto rounded-lg border border-slate-200 dark:border-slate-800">
+<div className="my-6 overflow-x-auto rounded-lg border border-[#EDE6DA] dark:border-[#332F28]">
   <table className="w-full text-sm text-left">
     <thead>
-      <tr className="border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/60 text-slate-900 dark:text-slate-200">
+      <tr className="border-b border-[#EDE6DA] dark:border-[#332F28] bg-[#F4F0E8] dark:bg-[#201E1A] text-[#1D1B18] dark:text-[#FAF8F4]">
         <th className="px-4 py-2.5 font-semibold">Option</th>
         <th className="px-4 py-2.5 font-semibold">The short version</th>
       </tr>
     </thead>
-    <tbody className="divide-y divide-slate-200 dark:divide-slate-800 text-slate-600 dark:text-slate-300">
+    <tbody className="divide-y divide-[#EDE6DA] dark:divide-[#332F28] text-[#5C564E] dark:text-[#C5BEB5]">
       <tr>
-        <td className="px-4 py-2.5 font-semibold text-slate-900 dark:text-slate-100 whitespace-nowrap">
+        <td className="px-4 py-2.5 font-semibold text-[#1D1B18] dark:text-[#FAF8F4] whitespace-nowrap">
           <strong>WSL2</strong> (what I used)
         </td>
         <td className="px-4 py-2.5">
@@ -53,7 +53,7 @@ Keploy doesn&apos;t run natively on Windows the way it does on Linux, eBPF is a 
         </td>
       </tr>
       <tr>
-        <td className="px-4 py-2.5 font-semibold text-slate-900 dark:text-slate-100 whitespace-nowrap">
+        <td className="px-4 py-2.5 font-semibold text-[#1D1B18] dark:text-[#FAF8F4] whitespace-nowrap">
           Docker
         </td>
         <td className="px-4 py-2.5">
@@ -61,7 +61,7 @@ Keploy doesn&apos;t run natively on Windows the way it does on Linux, eBPF is a 
         </td>
       </tr>
       <tr>
-        <td className="px-4 py-2.5 font-semibold text-slate-900 dark:text-slate-100 whitespace-nowrap">
+        <td className="px-4 py-2.5 font-semibold text-[#1D1B18] dark:text-[#FAF8F4] whitespace-nowrap">
           Native Windows build
         </td>
         <td className="px-4 py-2.5">
@@ -76,14 +76,14 @@ I went with <strong>WSL2</strong>, and the four setup steps below get you from a
 
 {/* Step 1 */}
 <div className="my-8">
-  <div className="relative border-l border-slate-200 dark:border-slate-800 pb-10 pl-8 last:border-l-transparent last:pb-2">
-    <span className="absolute top-0 -left-[15px] grid size-[30px] place-items-center rounded-full border border-indigo-500/30 bg-white dark:bg-slate-950 text-[13px] font-semibold text-indigo-600 dark:text-indigo-400">
+  <div className="relative border-l border-[#EDE6DA] dark:border-[#332F28] pb-10 pl-8 last:border-l-transparent last:pb-2">
+    <span className="absolute top-0 -left-[15px] grid size-[30px] place-items-center rounded-full border border-[#B89B6A]/50 bg-white dark:bg-[#141311] text-[13px] font-semibold text-[#A1824F] dark:text-[#D9C6A5]">
       1
     </span>
     <div>
-      <h3 id="setting-up-wsl2--ubuntu" className="group flex scroll-mt-24 items-center gap-2 font-semibold tracking-tight mt-1 mb-3 text-xl text-slate-900 dark:text-slate-100">
+      <h3 id="setting-up-wsl2--ubuntu" className="group flex scroll-mt-24 items-center gap-2 font-serif font-semibold tracking-tight mt-1 mb-3 text-xl text-[#1D1B18] dark:text-[#FAF8F4]">
         Setting up WSL2 + Ubuntu
-        <a href="#setting-up-wsl2--ubuntu" aria-label="Link to section" className="text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">#</a>
+        <a href="#setting-up-wsl2--ubuntu" aria-label="Link to section" className="text-[#B89B6A] dark:text-[#D9C6A5] opacity-0 group-hover:opacity-100 transition-opacity">#</a>
       </h3>
 
       <CodeBlock
@@ -92,7 +92,7 @@ I went with <strong>WSL2</strong>, and the four setup steps below get you from a
         code="wsl --install -d Ubuntu-22.04"
       />
 
-      <div className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
+      <div className="my-4 leading-[1.75] text-[#5C564E] dark:text-[#C5BEB5]">
         Run this in an <strong>elevated PowerShell</strong> window (right-click → Run as Administrator). It downloads Ubuntu, and on first launch asks you to create a Linux username and password, separate from your Windows login.
       </div>
 
@@ -100,7 +100,7 @@ I went with <strong>WSL2</strong>, and the four setup steps below get you from a
         Docker Desktop installs its own internal <code>docker-desktop</code> distro, so running <code>wsl -l -v</code> might show that instead of a real Ubuntu shell. Check the prompt: a real Ubuntu shell looks like <code>username@machine:~$</code>. If you just see a bare <code>#</code> prompt with no username, you&apos;re in a fallback shell with no package manager, you need to explicitly install Ubuntu, not just open <code>wsl.exe</code>.
       </Callout>
 
-      <div className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
+      <div className="my-4 leading-[1.75] text-[#5C564E] dark:text-[#C5BEB5]">
         Once inside Ubuntu, don&apos;t work out of your Windows filesystem (<code>/mnt/c/...</code>), move to your Linux home directory first:
       </div>
 
@@ -110,24 +110,24 @@ I went with <strong>WSL2</strong>, and the four setup steps below get you from a
         code="cd ~"
       />
 
-      <div className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
+      <div className="my-4 leading-[1.75] text-[#5C564E] dark:text-[#C5BEB5]">
         This avoids permission weirdness and is noticeably faster for anything involving <code>go build</code> or <code>git</code>.
       </div>
     </div>
   </div>
 
   {/* Step 2 */}
-  <div className="relative border-l border-slate-200 dark:border-slate-800 pb-10 pl-8 last:border-l-transparent last:pb-2">
-    <span className="absolute top-0 -left-[15px] grid size-[30px] place-items-center rounded-full border border-indigo-500/30 bg-white dark:bg-slate-950 text-[13px] font-semibold text-indigo-600 dark:text-indigo-400">
+  <div className="relative border-l border-[#EDE6DA] dark:border-[#332F28] pb-10 pl-8 last:border-l-transparent last:pb-2">
+    <span className="absolute top-0 -left-[15px] grid size-[30px] place-items-center rounded-full border border-[#B89B6A]/50 bg-white dark:bg-[#141311] text-[13px] font-semibold text-[#A1824F] dark:text-[#D9C6A5]">
       2
     </span>
     <div>
-      <h3 id="installing-go" className="group flex scroll-mt-24 items-center gap-2 font-semibold tracking-tight mt-1 mb-3 text-xl text-slate-900 dark:text-slate-100">
+      <h3 id="installing-go" className="group flex scroll-mt-24 items-center gap-2 font-serif font-semibold tracking-tight mt-1 mb-3 text-xl text-[#1D1B18] dark:text-[#FAF8F4]">
         Installing Go
-        <a href="#installing-go" aria-label="Link to section" className="text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">#</a>
+        <a href="#installing-go" aria-label="Link to section" className="text-[#B89B6A] dark:text-[#D9C6A5] opacity-0 group-hover:opacity-100 transition-opacity">#</a>
       </h3>
 
-      <div className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
+      <div className="my-4 leading-[1.75] text-[#5C564E] dark:text-[#C5BEB5]">
         Ubuntu&apos;s default <code>apt</code> package for Go is often years out of date (I got 1.18 when the current stable was well past 1.23). Skip <code>apt</code> and install directly from Go&apos;s official binary:
       </div>
 
@@ -145,14 +145,14 @@ go version`}
   </div>
 
   {/* Step 3 */}
-  <div className="relative border-l border-slate-200 dark:border-slate-800 pb-10 pl-8 last:border-l-transparent last:pb-2">
-    <span className="absolute top-0 -left-[15px] grid size-[30px] place-items-center rounded-full border border-indigo-500/30 bg-white dark:bg-slate-950 text-[13px] font-semibold text-indigo-600 dark:text-indigo-400">
+  <div className="relative border-l border-[#EDE6DA] dark:border-[#332F28] pb-10 pl-8 last:border-l-transparent last:pb-2">
+    <span className="absolute top-0 -left-[15px] grid size-[30px] place-items-center rounded-full border border-[#B89B6A]/50 bg-white dark:bg-[#141311] text-[13px] font-semibold text-[#A1824F] dark:text-[#D9C6A5]">
       3
     </span>
     <div>
-      <h3 id="installing-keploy" className="group flex scroll-mt-24 items-center gap-2 font-semibold tracking-tight mt-1 mb-3 text-xl text-slate-900 dark:text-slate-100">
+      <h3 id="installing-keploy" className="group flex scroll-mt-24 items-center gap-2 font-serif font-semibold tracking-tight mt-1 mb-3 text-xl text-[#1D1B18] dark:text-[#FAF8F4]">
         Installing Keploy
-        <a href="#installing-keploy" aria-label="Link to section" className="text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">#</a>
+        <a href="#installing-keploy" aria-label="Link to section" className="text-[#B89B6A] dark:text-[#D9C6A5] opacity-0 group-hover:opacity-100 transition-opacity">#</a>
       </h3>
 
       <CodeBlock
@@ -162,7 +162,7 @@ go version`}
 keploy --version`}
       />
 
-      <div className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
+      <div className="my-4 leading-[1.75] text-[#5C564E] dark:text-[#C5BEB5]">
         Then authenticate:
       </div>
 
@@ -172,7 +172,7 @@ keploy --version`}
         code="keploy login"
       />
 
-      <div className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
+      <div className="my-4 leading-[1.75] text-[#5C564E] dark:text-[#C5BEB5]">
         This opens a browser tab to sign in. You have about a minute before the auth code expires, if you&apos;re slow to switch tabs, it&apos;ll time out and you&apos;ll just need to re-run the command.
       </div>
 
@@ -188,17 +188,17 @@ keploy --version`}
   </div>
 
   {/* Step 4 */}
-  <div className="relative border-l border-slate-200 dark:border-slate-800 pb-10 pl-8 last:border-l-transparent last:pb-2">
-    <span className="absolute top-0 -left-[15px] grid size-[30px] place-items-center rounded-full border border-indigo-500/30 bg-white dark:bg-slate-950 text-[13px] font-semibold text-indigo-600 dark:text-indigo-400">
+  <div className="relative border-l border-[#EDE6DA] dark:border-[#332F28] pb-10 pl-8 last:border-l-transparent last:pb-2">
+    <span className="absolute top-0 -left-[15px] grid size-[30px] place-items-center rounded-full border border-[#B89B6A]/50 bg-white dark:bg-[#141311] text-[13px] font-semibold text-[#A1824F] dark:text-[#D9C6A5]">
       4
     </span>
     <div>
-      <h3 id="docker-desktop--wsl-integration" className="group flex scroll-mt-24 items-center gap-2 font-semibold tracking-tight mt-1 mb-3 text-xl text-slate-900 dark:text-slate-100">
+      <h3 id="docker-desktop--wsl-integration" className="group flex scroll-mt-24 items-center gap-2 font-serif font-semibold tracking-tight mt-1 mb-3 text-xl text-[#1D1B18] dark:text-[#FAF8F4]">
         Docker Desktop + WSL Integration
-        <a href="#docker-desktop--wsl-integration" aria-label="Link to section" className="text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">#</a>
+        <a href="#docker-desktop--wsl-integration" aria-label="Link to section" className="text-[#B89B6A] dark:text-[#D9C6A5] opacity-0 group-hover:opacity-100 transition-opacity">#</a>
       </h3>
 
-      <div className="my-4 leading-[1.75] text-slate-700 dark:text-slate-300">
+      <div className="my-4 leading-[1.75] text-[#5C564E] dark:text-[#C5BEB5]">
         The Echo + PostgreSQL sample runs PostgreSQL in a container while the Go app runs natively in WSL. That means Docker Desktop needs to talk to your Ubuntu distro specifically:
       </div>
 
@@ -210,9 +210,9 @@ keploy --version`}
 </div>
 
 {/* Section: Running the Echo + PostgreSQL Sample */}
-<h2 id="running-the-echo--postgresql-sample" className="group flex scroll-mt-24 items-center gap-2 font-semibold tracking-tight mt-14 mb-4 border-b border-slate-200 dark:border-slate-800 pb-3 text-2xl sm:text-[1.7rem] text-slate-900 dark:text-slate-100">
+<h2 id="running-the-echo--postgresql-sample" className="group flex scroll-mt-24 items-center gap-2 font-serif font-semibold tracking-tight mt-14 mb-4 border-b border-[#EDE6DA] dark:border-[#332F28] pb-3 text-2xl sm:text-[1.7rem] text-[#1D1B18] dark:text-[#FAF8F4]">
   Running the Echo + PostgreSQL Sample
-  <a href="#running-the-echo--postgresql-sample" aria-label="Link to section" className="text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">#</a>
+  <a href="#running-the-echo--postgresql-sample" aria-label="Link to section" className="text-[#B89B6A] dark:text-[#D9C6A5] opacity-0 group-hover:opacity-100 transition-opacity">#</a>
 </h2>
 
 This is a URL shortener API built with the Echo web framework backed by PostgreSQL — shorten URLs, follow 302 redirects, and query statistics.
@@ -257,9 +257,9 @@ Build the app:
 />
 
 {/* Sub-section: Recording Test Cases */}
-<h3 id="recording-test-cases" className="group flex scroll-mt-24 items-center gap-2 font-semibold tracking-tight mt-10 mb-3 text-xl text-slate-900 dark:text-slate-100">
+<h3 id="recording-test-cases" className="group flex scroll-mt-24 items-center gap-2 font-serif font-semibold tracking-tight mt-10 mb-3 text-xl text-[#1D1B18] dark:text-[#FAF8F4]">
   Recording Test Cases
-  <a href="#recording-test-cases" aria-label="Link to section" className="text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">#</a>
+  <a href="#recording-test-cases" aria-label="Link to section" className="text-[#B89B6A] dark:text-[#D9C6A5] opacity-0 group-hover:opacity-100 transition-opacity">#</a>
 </h3>
 
 This is the actual Keploy step. Everything before this was just getting a Linux environment ready.
@@ -317,29 +317,29 @@ ls -R keploy/`}
 You&apos;ll find two things in there:
 
 <div className="my-6 grid gap-4 sm:grid-cols-2">
-  <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0d111c] p-5 shadow-xs">
-    <h4 className="font-heading font-medium text-base text-slate-900 dark:text-slate-100 mb-2 flex items-center gap-2">
-      <span className="text-indigo-500 font-bold">📄</span> Test files
+  <div className="rounded-xl border border-[#EDE6DA] dark:border-[#332F28] bg-white dark:bg-[#1C1A17] p-5 shadow-xs">
+    <h4 className="font-serif font-semibold text-base text-[#1D1B18] dark:text-[#FAF8F4] mb-2 flex items-center gap-2">
+      <span className="text-[#A1824F] dark:text-[#D9C6A5] font-bold">📄</span> Test files
     </h4>
-    <div className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+    <div className="text-sm text-[#5C564E] dark:text-[#C5BEB5] leading-relaxed">
       Your actual request/response pairs, each curl call you made, captured as a replayable test case in <code>tests/post-url-1.yaml</code>.
     </div>
   </div>
 
-  <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0d111c] p-5 shadow-xs">
-    <h4 className="font-heading font-medium text-base text-slate-900 dark:text-slate-100 mb-2 flex items-center gap-2">
-      <span className="text-emerald-500 font-bold">🗄️</span> Mocks file
+  <div className="rounded-xl border border-[#EDE6DA] dark:border-[#332F28] bg-white dark:bg-[#1C1A17] p-5 shadow-xs">
+    <h4 className="font-serif font-semibold text-base text-[#1D1B18] dark:text-[#FAF8F4] mb-2 flex items-center gap-2">
+      <span className="text-[#5E7E5A] dark:text-[#88AC84] font-bold">🗄️</span> Mocks file
     </h4>
-    <div className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+    <div className="text-sm text-[#5C564E] dark:text-[#C5BEB5] leading-relaxed">
       The raw PostgreSQL wire protocol traffic that happened behind the scenes — handshakes, SQL queries, parameter binds, DataRows — captured verbatim in <code>mocks.yaml</code>.
     </div>
   </div>
 </div>
 
 {/* Sub-section: Replaying Without PostgreSQL */}
-<h3 id="replaying-without-postgresql" className="group flex scroll-mt-24 items-center gap-2 font-semibold tracking-tight mt-10 mb-3 text-xl text-slate-900 dark:text-slate-100">
+<h3 id="replaying-without-postgresql" className="group flex scroll-mt-24 items-center gap-2 font-serif font-semibold tracking-tight mt-10 mb-3 text-xl text-[#1D1B18] dark:text-[#FAF8F4]">
   Replaying Without PostgreSQL
-  <a href="#replaying-without-postgresql" aria-label="Link to section" className="text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">#</a>
+  <a href="#replaying-without-postgresql" aria-label="Link to section" className="text-[#B89B6A] dark:text-[#D9C6A5] opacity-0 group-hover:opacity-100 transition-opacity">#</a>
 </h3>
 
 This is the payoff. Stop your PostgreSQL container, or just trust that Keploy doesn&apos;t need it:
@@ -359,9 +359,9 @@ Keploy replays your exact curl calls against a fresh instance of the app, but in
 </Callout>
 
 {/* Sub-section: The Bug That Taught Me the Most */}
-<h3 id="the-bug-that-taught-me-the-most" className="group flex scroll-mt-24 items-center gap-2 font-semibold tracking-tight mt-10 mb-3 text-xl text-slate-900 dark:text-slate-100">
+<h3 id="the-bug-that-taught-me-the-most" className="group flex scroll-mt-24 items-center gap-2 font-serif font-semibold tracking-tight mt-10 mb-3 text-xl text-[#1D1B18] dark:text-[#FAF8F4]">
   The Bug That Taught Me the Most
-  <a href="#the-bug-that-taught-me-the-most" aria-label="Link to section" className="text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">#</a>
+  <a href="#the-bug-that-taught-me-the-most" aria-label="Link to section" className="text-[#B89B6A] dark:text-[#D9C6A5] opacity-0 group-hover:opacity-100 transition-opacity">#</a>
 </h3>
 
 My first run attempt failed with <code>connection refused at postgres:5432</code>. Here&apos;s the debugging trail, because I think it&apos;s more useful than a clean success story.
@@ -411,9 +411,9 @@ That proved Keploy catches contract regressions without needing hand-written tes
 With dynamic fields placed in the noise list, the test suite verifies structural schema correctness and passes completely.
 
 {/* Section: Quick Answers */}
-<h2 id="quick-answers" className="group flex scroll-mt-24 items-center gap-2 font-semibold tracking-tight mt-14 mb-4 border-b border-slate-200 dark:border-slate-800 pb-3 text-2xl sm:text-[1.7rem] text-slate-900 dark:text-slate-100">
+<h2 id="quick-answers" className="group flex scroll-mt-24 items-center gap-2 font-serif font-semibold tracking-tight mt-14 mb-4 border-b border-[#EDE6DA] dark:border-[#332F28] pb-3 text-2xl sm:text-[1.7rem] text-[#1D1B18] dark:text-[#FAF8F4]">
   Quick Answers
-  <a href="#quick-answers" aria-label="Link to section" className="text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">#</a>
+  <a href="#quick-answers" aria-label="Link to section" className="text-[#B89B6A] dark:text-[#D9C6A5] opacity-0 group-hover:opacity-100 transition-opacity">#</a>
 </h2>
 
 A few questions I had to answer for myself along the way, collected in one place:
@@ -421,46 +421,46 @@ A few questions I had to answer for myself along the way, collected in one place
 <GotchaAccordion />
 
 {/* Section: What This Actually Buys You */}
-<h2 id="what-this-actually-buys-you" className="group flex scroll-mt-24 items-center gap-2 font-semibold tracking-tight mt-14 mb-4 border-b border-slate-200 dark:border-slate-800 pb-3 text-2xl sm:text-[1.7rem] text-slate-900 dark:text-slate-100">
+<h2 id="what-this-actually-buys-you" className="group flex scroll-mt-24 items-center gap-2 font-serif font-semibold tracking-tight mt-14 mb-4 border-b border-[#EDE6DA] dark:border-[#332F28] pb-3 text-2xl sm:text-[1.7rem] text-[#1D1B18] dark:text-[#FAF8F4]">
   What This Actually Buys You
-  <a href="#what-this-actually-buys-you" aria-label="Link to section" className="text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">#</a>
+  <a href="#what-this-actually-buys-you" aria-label="Link to section" className="text-[#B89B6A] dark:text-[#D9C6A5] opacity-0 group-hover:opacity-100 transition-opacity">#</a>
 </h2>
 
 The interesting part isn&apos;t &quot;look, tests pass.&quot; It&apos;s this:
 
 <div className="my-6 grid gap-4 sm:grid-cols-3">
-  <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0d111c] p-6 shadow-xs">
-    <div className="w-8 h-8 rounded-lg bg-indigo-500/10 text-indigo-500 flex items-center justify-center font-bold text-base mb-3">
+  <div className="rounded-xl border border-[#EDE6DA] dark:border-[#332F28] bg-white dark:bg-[#1C1A17] p-6 shadow-xs">
+    <div className="w-8 h-8 rounded-lg bg-[#F4F0E8] dark:bg-[#201E1A] text-[#B89B6A] dark:text-[#D9C6A5] flex items-center justify-center font-bold text-base mb-3 border border-[#EDE6DA] dark:border-[#332F28]">
       ⚡
     </div>
-    <h3 className="font-heading font-medium text-base text-slate-900 dark:text-slate-100 mb-2">
+    <h3 className="font-serif font-semibold text-base text-[#1D1B18] dark:text-[#FAF8F4] mb-2">
       CI without dependencies
     </h3>
-    <div className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+    <div className="text-sm text-[#5C564E] dark:text-[#C5BEB5] leading-relaxed">
       Your integration tests no longer need a live PostgreSQL instance, database seeds, or container spin-up time to run in CI.
     </div>
   </div>
 
-  <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0d111c] p-6 shadow-xs">
-    <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center font-bold text-base mb-3">
+  <div className="rounded-xl border border-[#EDE6DA] dark:border-[#332F28] bg-white dark:bg-[#1C1A17] p-6 shadow-xs">
+    <div className="w-8 h-8 rounded-lg bg-[#F4F6F2] dark:bg-[#1C261D] text-[#5E7E5A] dark:text-[#88AC84] flex items-center justify-center font-bold text-base mb-3 border border-[#CCD8CA] dark:border-[#2D4030]">
       🛡️
     </div>
-    <h3 className="font-heading font-medium text-base text-slate-900 dark:text-slate-100 mb-2">
+    <h3 className="font-serif font-semibold text-base text-[#1D1B18] dark:text-[#FAF8F4] mb-2">
       Mocks that can&apos;t drift
     </h3>
-    <div className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+    <div className="text-sm text-[#5C564E] dark:text-[#C5BEB5] leading-relaxed">
       The mocks are generated from <em>real</em> PostgreSQL wire traffic, not hand-written stubs that quietly fall out of sync with what your API actually queries.
     </div>
   </div>
 
-  <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0d111c] p-6 shadow-xs">
-    <div className="w-8 h-8 rounded-lg bg-purple-500/10 text-purple-500 flex items-center justify-center font-bold text-base mb-3">
+  <div className="rounded-xl border border-[#EDE6DA] dark:border-[#332F28] bg-white dark:bg-[#1C1A17] p-6 shadow-xs">
+    <div className="w-8 h-8 rounded-lg bg-[#F4F0E8] dark:bg-[#201E1A] text-[#B89B6A] dark:text-[#D9C6A5] flex items-center justify-center font-bold text-base mb-3 border border-[#EDE6DA] dark:border-[#332F28]">
       ✍️
     </div>
-    <h3 className="font-heading font-medium text-base text-slate-900 dark:text-slate-100 mb-2">
+    <h3 className="font-serif font-semibold text-base text-[#1D1B18] dark:text-[#FAF8F4] mb-2">
       Zero extra code
     </h3>
-    <div className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+    <div className="text-sm text-[#5C564E] dark:text-[#C5BEB5] leading-relaxed">
       You&apos;re not instrumenting handlers, seeding database tables, or writing mock fixtures. You&apos;re just calling your API normally while Keploy watches.
     </div>
   </div>

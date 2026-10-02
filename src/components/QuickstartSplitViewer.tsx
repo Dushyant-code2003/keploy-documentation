@@ -39,22 +39,22 @@ export function QuickstartSplitViewer() {
   return (
     <div className="my-6 grid grid-cols-1 lg:grid-cols-2 gap-4">
       {/* Left Column: Request */}
-      <div className="rounded-xl border border-slate-700/60 bg-[#0d111c] text-slate-100 overflow-hidden shadow-lg flex flex-col">
+      <div className="rounded-xl border border-[#38332A] bg-[#161513] text-[#EDE7DF] overflow-hidden shadow-md flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between px-3.5 py-2.5 bg-[#141926] border-b border-slate-800 text-xs font-mono">
+        <div className="flex items-center justify-between px-3.5 py-2.5 bg-[#1E1C19] border-b border-[#2D2923] text-xs font-mono">
           <div className="flex items-center gap-2">
-            <span className="px-2 py-0.5 rounded bg-blue-600/20 text-blue-400 font-bold text-[11px] uppercase tracking-wider border border-blue-500/30">
+            <span className="px-2 py-0.5 rounded bg-[#292520] text-[#D9C6A5] font-bold text-[11px] uppercase tracking-wider border border-[#3A352D]">
               POST
             </span>
-            <span className="text-slate-300 font-medium">/url</span>
+            <span className="text-[#FAF8F4] font-medium">/url</span>
           </div>
           <button
             onClick={copyReq}
-            className="flex items-center gap-1 text-slate-400 hover:text-slate-200 text-xs transition-colors"
+            className="flex items-center gap-1 text-[#8F897D] hover:text-[#FAF8F4] text-xs transition-colors"
             title="Copy Request"
           >
             {copiedReq ? (
-              <Check className="w-3.5 h-3.5 text-emerald-400" />
+              <Check className="w-3.5 h-3.5 text-[#B89B6A]" />
             ) : (
               <Copy className="w-3.5 h-3.5" />
             )}
@@ -62,35 +62,35 @@ export function QuickstartSplitViewer() {
         </div>
 
         {/* Code Content */}
-        <div className="p-4 font-mono text-xs leading-relaxed overflow-x-auto flex-1 text-slate-200">
-          <div className="text-slate-500 mb-2"># Send live traffic to Echo backend</div>
-          <pre className="m-0 text-slate-100">{requestSnippet}</pre>
-          <div className="mt-4 pt-3 border-t border-slate-800/80 text-[11px] text-slate-400 flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+        <div className="p-4 font-mono text-xs leading-relaxed overflow-x-auto flex-1 text-[#EDE7DF]">
+          <div className="text-[#7A7165] mb-2"># Send live traffic to Echo backend</div>
+          <pre className="m-0 text-[#FAF8F4]">{requestSnippet}</pre>
+          <div className="mt-4 pt-3 border-t border-[#2D2923] text-[11px] text-[#A89E90] flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-[#88AC84] animate-pulse" />
             <span>Keploy proxy intercepting on port 8082</span>
           </div>
         </div>
       </div>
 
       {/* Right Column: Response */}
-      <div className="rounded-xl border border-slate-700/60 bg-[#0d111c] text-slate-100 overflow-hidden shadow-lg flex flex-col">
+      <div className="rounded-xl border border-[#38332A] bg-[#161513] text-[#EDE7DF] overflow-hidden shadow-md flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between px-3.5 py-2.5 bg-[#141926] border-b border-slate-800 text-xs font-mono">
+        <div className="flex items-center justify-between px-3.5 py-2.5 bg-[#1E1C19] border-b border-[#2D2923] text-xs font-mono">
           <div className="flex items-center gap-2">
-            <span className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold text-[11px] border border-emerald-500/30">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+            <span className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-[#1C261D] text-[#88AC84] font-bold text-[11px] border border-[#2D4030]">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#88AC84]" />
               200 OK
             </span>
-            <span className="text-slate-400 text-[11px]">41ms</span>
-            <span className="text-slate-500 text-[10px]">application/json</span>
+            <span className="text-[#A89E90] text-[11px]">41ms</span>
+            <span className="text-[#7A7165] text-[10px]">application/json</span>
           </div>
           <button
             onClick={copyRes}
-            className="flex items-center gap-1 text-slate-400 hover:text-slate-200 text-xs transition-colors"
+            className="flex items-center gap-1 text-[#8F897D] hover:text-[#FAF8F4] text-xs transition-colors"
             title="Copy Response"
           >
             {copiedRes ? (
-              <Check className="w-3.5 h-3.5 text-emerald-400" />
+              <Check className="w-3.5 h-3.5 text-[#B89B6A]" />
             ) : (
               <Copy className="w-3.5 h-3.5" />
             )}
@@ -98,8 +98,8 @@ export function QuickstartSplitViewer() {
         </div>
 
         {/* Code Content */}
-        <div className="p-4 font-mono text-xs leading-relaxed overflow-x-auto flex-1 text-slate-200">
-          <pre className="m-0 text-indigo-300">{responseSnippet}</pre>
+        <div className="p-4 font-mono text-xs leading-relaxed overflow-x-auto flex-1 text-[#EDE7DF]">
+          <pre className="m-0 text-[#D9C6A5]">{responseSnippet}</pre>
         </div>
       </div>
     </div>

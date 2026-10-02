@@ -4,28 +4,48 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  --color-keploy-orange: #ff6b35;
-  --color-keploy-blue: #0070f3;
+  --font-sans: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-serif: var(--font-serif), "Cormorant Garamond", Georgia, serif;
+
+  --color-ivory: #FAF8F4;
+  --color-ivory-deep: #F4F0E8;
+  --color-sand: #EDE6DA;
+  --color-sand-deep: #DFD5C6;
+  --color-champagne: #D9C6A5;
+  --color-champagne-light: #F2ECE1;
+  --color-gold: #B89B6A;
+  --color-gold-deep: #A1824F;
+  --color-charcoal: #1D1B18;
+  --color-charcoal-deep: #141311;
+  --color-charcoal-card: #201E1A;
+  --color-charcoal-border: #332F28;
+  --color-stone: #6B655C;
+  --color-mist: #8F897D;
 }
 
 :root {
-  --bg-primary: #ffffff;
-  --bg-secondary: #f8fafc;
-  --bg-card: #ffffff;
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --border-color: #e2e8f0;
+  --bg-primary: #FAF8F4;
+  --bg-secondary: #F4F0E8;
+  --bg-card: #FFFFFF;
+  --text-primary: #1D1B18;
+  --text-secondary: #6B655C;
+  --text-muted: #8F897D;
+  --border-color: #EDE6DA;
+  --accent-gold: #A1824F;
+  --accent-champagne: #D9C6A5;
 }
 
 .dark {
-  --bg-primary: #090d16;
-  --bg-secondary: #0f172a;
-  --bg-card: #131c2e;
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --border-color: #1e293b;
+  --bg-primary: #141311;
+  --bg-secondary: #1D1B18;
+  --bg-card: #201E1A;
+  --text-primary: #FAF8F4;
+  --text-secondary: #C5BEB5;
+  --text-muted: #8F897D;
+  --border-color: #332F28;
+  --accent-gold: #D9C6A5;
+  --accent-champagne: #B89B6A;
 }
 
 html {
@@ -37,4 +57,5 @@ body {
   color: var(--text-primary);
   font-family: var(--font-sans);
   min-height: 100vh;
+  letter-spacing: -0.01em;
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import Image from "next/image";
 import { ExternalLink } from "lucide-react";
 
 export function Footer() {
@@ -9,8 +9,14 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3 text-center md:text-left">
-            <div className="w-8 h-8 rounded-lg bg-[#EDE6DA] dark:bg-[#201E1A] flex items-center justify-center font-bold text-lg">
-              🐰
+            <div className="size-8 rounded-lg overflow-hidden border border-[#EDE6DA] dark:border-[#332F28] bg-white dark:bg-[#1D1B18] p-0.5 flex items-center justify-center">
+              <Image
+                src="/keploy-logo.png"
+                alt="Keploy Logo"
+                width={26}
+                height={26}
+                className="rounded object-contain"
+              />
             </div>
             <div>
               <p className="font-serif text-base font-semibold text-[#1D1B18] dark:text-[#FAF8F4]">
@@ -33,12 +39,12 @@ export function Footer() {
               <ExternalLink className="w-3 h-3" />
             </a>
             <a
-              href="https://github.com/keploy/keploy"
+              href="https://github.com/Dushyant-code2003/keploy-documentation"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-[#A1824F] dark:hover:text-[#D9C6A5] transition-colors flex items-center gap-1"
             >
-              <span>GitHub (Keploy)</span>
+              <span>GitHub</span>
               <ExternalLink className="w-3 h-3" />
             </a>
             <a

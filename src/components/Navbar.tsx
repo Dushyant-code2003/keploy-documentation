@@ -32,10 +32,10 @@ export function Navbar() {
           </span>
 
           <a
-            href="https://github.com/Dushyant-code2003/keploy-documentation"
+            href="https://github.com/keploy/keploy"
             target="_blank"
             rel="noreferrer"
-            aria-label="Source code on GitHub"
+            aria-label="Keploy on GitHub"
             className="inline-flex size-8 items-center justify-center rounded-lg text-[#6B655C] dark:text-[#C5BEB5] hover:bg-[#EDE6DA]/60 dark:hover:bg-[#201E1A] hover:text-[#1D1B18] dark:hover:text-[#FAF8F4] transition-colors"
           >
             <svg viewBox="0 0 24 24" fill="currentColor" className="size-4.5">

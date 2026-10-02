@@ -1,7 +1,7 @@
 import React from "react";
 import TutorialContent from "@/content/tutorial.mdx";
 import { TableOfContents } from "@/components/TableOfContents";
-import { Clock, ArrowDown, BookOpen } from "lucide-react";
+import { ArrowDown, BookOpen } from "lucide-react";
 
 export default function Home() {
   return (
@@ -90,12 +90,6 @@ export default function Home() {
               <div className="text-base font-bold text-[#1D1B18] dark:text-[#FAF8F4] mt-0.5">WSL2 Ubuntu</div>
             </div>
           </div>
-
-          {/* Reading Time Meta */}
-          <p className="mt-7 flex items-center justify-center gap-2 text-xs text-[#8F897D]">
-            <Clock className="size-3.5" />
-            <span>By Dushyant Patel · 15 min read · Hands-on verified on Keploy v3.8.57, Go 1.23, and PostgreSQL 14</span>
-          </p>
         </div>
       </section>
 

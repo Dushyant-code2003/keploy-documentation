@@ -14,7 +14,7 @@ export function Footer() {
             </div>
             <div>
               <p className="font-serif text-base font-semibold text-[#1D1B18] dark:text-[#FAF8F4]">
-                Keploy DevRel Candidate Assignment
+                Keploy Developer Documentation
               </p>
               <p className="text-xs text-[#8F897D]">
                 Crafted with Next.js, MDX, and Tailwind CSS.
@@ -54,7 +54,7 @@ export function Footer() {
         </div>
 
         <div className="mt-8 pt-6 border-t border-[#EDE6DA] dark:border-[#332F28] text-center text-xs text-[#8F897D]">
-          Built for the DevRel evaluation. 100% verified against Keploy v3.8.57, Go 1.26, PostgreSQL 14, and WSL2 Ubuntu.
+          Hands-on tested and verified against Keploy v3.8.57, Go 1.23, PostgreSQL 14, and WSL2 Ubuntu.
         </div>
       </div>
     </footer>
